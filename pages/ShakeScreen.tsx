@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         height: 72,
         top: 50,
 
-        fontFamily: 'Quicksand',
+
         fontStyle: "normal",
         fontWeight: "600",
         fontSize: 40,
