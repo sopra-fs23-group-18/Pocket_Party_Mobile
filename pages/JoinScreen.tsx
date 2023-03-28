@@ -15,8 +15,12 @@ export const JoinScreen = (props: NativeStackScreenProps<any>): JSX.Element => {
         navigation.navigate('Shake');
     } 
 
+    const goToWebRTC = (_: Event) => {
+        navigation.navigate('Shake');
+    } 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Button title="Go to shake detection" onPress={onButtonPress}/>
+            <Button title="Go to WebRTC demo" onPress={goToWebRTC}/>
         </View>)
 }
