@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Button, View } from "react-native";
-import { connect, dataChannel } from "../util/WebRTC";
+import { getWsUrl } from "../util/getDomain";
+import { PeerConnection, WebSocketConnection } from "../util/WebRTC";
+
 
 export const WebRTCTestScreen = (): JSX.Element => {
+    const webSocketConnection = useRef(null as unknown as WebSocketConnection);
+    const peerConnection = useRef(null as unknown as PeerConnection);
 
+    useEffect(() => {
+        webSocketConnection.current = new WebSocketConnection(getWsUrl()+"/socket");
+    }, []);
+
+    const connect = (_: Event) => {
+        if(peerConnection.current === null){
+            peerConnection.current = new PeerConnection({webSocketConnection: webSocketConnection.current, onReceive: (msg: any) => {
+                console.log(`Received msg from web app ${msg}`); 
+            }})
+            peerConnection.current.connect();
+        }
+    }
     const sendMessage = (_: Event) => {
-       dataChannel.send("Hello Web from mobile")
-        
+       peerConnection.current?.send("Hello Web from mobile")
     } 
 
     return (
