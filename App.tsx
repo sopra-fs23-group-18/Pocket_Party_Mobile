@@ -19,6 +19,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { JoinScreen } from './pages/JoinScreen';
 import { ShakeScreen } from './pages/ShakeScreen';
+import { TapScreen } from './pages/TapScreen';
 import { WebRTCTestScreen } from './pages/WebRTCTestScreen';
 
 const Stack = createNativeStackNavigator();
@@ -36,6 +37,7 @@ function App(): JSX.Element {
               headerShown: false,}}>
       <Stack.Screen name="Join" component={JoinScreen} />
       <Stack.Screen name="Shake" component={ShakeScreen} />
+      <Stack.Screen name="Tap" component={TapScreen} />
       <Stack.Screen name="WebRTC" component={WebRTCTestScreen} />
     </Stack.Navigator>
   </NavigationContainer>
