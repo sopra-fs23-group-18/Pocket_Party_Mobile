@@ -21,6 +21,8 @@ import { JoinScreen } from './pages/JoinScreen';
 import { ShakeScreen } from './pages/ShakeScreen';
 import { TapScreen } from './pages/TapScreen';
 import { WebRTCTestScreen } from './pages/WebRTCTestScreen';
+import { NameInputScreen } from './pages/NameInputScreen';
+import QRScanner from './pages/QRScanner';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,14 +35,16 @@ function App(): JSX.Element {
 
   return (
     <NavigationContainer>
-    <Stack.Navigator initialRouteName="Join" screenOptions={{
-              headerShown: false,}}>
-      <Stack.Screen name="Join" component={JoinScreen} />
-      <Stack.Screen name="Shake" component={ShakeScreen} />
-      <Stack.Screen name="Tap" component={TapScreen} />
-      <Stack.Screen name="WebRTC" component={WebRTCTestScreen} />
-    </Stack.Navigator>
-  </NavigationContainer>
+      <Stack.Navigator initialRouteName="Join" screenOptions={{
+        headerShown: false,
+      }}>
+        <Stack.Screen name="Join" component={JoinScreen} />
+        <Stack.Screen name="Shake" component={ShakeScreen} />
+        <Stack.Screen name="Tap" component={TapScreen} />
+        <Stack.Screen name="WebRTC" component={WebRTCTestScreen} />
+        <Stack.Screen name="QRScanner" component={QRScanner} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
