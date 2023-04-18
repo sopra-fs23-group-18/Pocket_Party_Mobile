@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import { Dimensions } from 'react-native';
+import { createAvatar } from '@dicebear/core';
+import { bottts } from '@dicebear/collection';
+import { SvgXml } from 'react-native-svg';
 
 const NameInputScreen = () => {
     const [name, setName] = useState('');
+    const [avatar, setAvatar] = useState('');
+    const defaultAvatar = createAvatar(bottts, {
+        seed: "Unknown",
+        size: 32
+    }).toString();
 
     const handleNameChange = (text: string) => {
         setName(text);
@@ -11,8 +19,21 @@ const NameInputScreen = () => {
 
     const handleReadyPress = () => {
         console.log('Button pressed');
-        //TODO Sven: add functionality to button
+        const avatar = createAvatar(bottts, {
+            seed: name,
+            size: 32
+        }).toString();
+        setAvatar(avatar);
     };
+
+    useEffect(() => {
+        if (avatar) {
+            const svgAvatar = avatar;
+            setSvgXml(svgAvatar);
+        }
+    }, [avatar]);
+
+    const [svgXml, setSvgXml] = useState(defaultAvatar);
 
     return (
         <View style={styles.container}>
@@ -26,10 +47,11 @@ const NameInputScreen = () => {
             <TouchableOpacity style={styles.button} onPress={handleReadyPress}>
                 <Text style={styles.buttonText}>Ready</Text>
             </TouchableOpacity>
+            <SvgXml xml={svgXml} />
         </View>
     );
 };
-//TODO Sven: add icon
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
