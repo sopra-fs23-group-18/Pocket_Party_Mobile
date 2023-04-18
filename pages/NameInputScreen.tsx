@@ -5,17 +5,17 @@ import { createAvatar } from '@dicebear/core';
 import { bottts } from '@dicebear/collection';
 import { SvgXml } from 'react-native-svg';
 import { WebSocketContext } from '../App';
-import  {ActivationState} from '@stomp/stompjs'
-
-const NameInputScreen = () => {
+import { ActivationState } from '@stomp/stompjs'
+import { NativeStackScreenProps } from "@react-navigation/native-stack/lib/typescript/src/types";
+const NameInputScreen = (props: NativeStackScreenProps<any>) => {
     const connections = useContext(WebSocketContext);
-
+    const { navigation } = props;
     const onPlayerJoined = (data: any) => {
         console.log(`TODO: SAVE registered player data ${data.body}`);
     }
-    
+
     useEffect(() => {
-        if(connections.stompConnection.state === ActivationState.ACTIVE){
+        if (connections.stompConnection.state === ActivationState.ACTIVE) {
             connections.stompConnection.subscribe(`/user/queue/join`, onPlayerJoined);
             return;
         }
@@ -28,11 +28,6 @@ const NameInputScreen = () => {
     }, [connections])
 
     const [name, setName] = useState('');
-    const [avatar, setAvatar] = useState('');
-    const defaultAvatar = createAvatar(bottts, {
-        seed: "Unknown",
-        size: 32
-    }).toString();
 
     const handleNameChange = (text: string) => {
         setName(text);
@@ -42,33 +37,24 @@ const NameInputScreen = () => {
         console.log('Button pressed');
         const avatar = createAvatar(bottts, {
             seed: name,
-            size: 32
+            size: 128
         }).toString();
-        setAvatar(avatar);
+        navigation.navigate("WaitingScreen", { avatar });
 
         const player = {
             nickname: name
         };
 
-        if(connections.stompConnection.state === ActivationState.ACTIVE){
+        if (connections.stompConnection.state === ActivationState.ACTIVE) {
             connections.stompConnection.publish({
                 destination: `/lobbies/${1}`,
                 body: JSON.stringify(player)
             })
-            return;   
+            return;
         }
-       
+
         //TODO Handle no internet connection
     };
-
-    useEffect(() => {
-        if (avatar) {
-            const svgAvatar = avatar;
-            setSvgXml(svgAvatar);
-        }
-    }, [avatar]);
-
-    const [svgXml, setSvgXml] = useState(defaultAvatar);
 
     return (
         <View style={styles.container}>
@@ -82,7 +68,6 @@ const NameInputScreen = () => {
             <TouchableOpacity style={styles.button} onPress={handleReadyPress}>
                 <Text style={styles.buttonText}>Ready</Text>
             </TouchableOpacity>
-            <SvgXml xml={svgXml} />
         </View>
     );
 };
