@@ -1,7 +1,7 @@
 import { NavigationProp, NavigatorScreenParams, TypedNavigator } from "@react-navigation/native";
 import { NativeStackNavigationProp, NativeStackScreenProps, } from "@react-navigation/native-stack/lib/typescript/src/types";
 import React from "react";
-import { Button, Text, View } from "react-native";
+import { Button, GestureResponderEvent, Text, View } from "react-native";
 
 
 // type JoinScreenProps = {
@@ -11,21 +11,21 @@ import { Button, Text, View } from "react-native";
 export const JoinScreen = (props: NativeStackScreenProps<any>): JSX.Element => {
     const { navigation } = props;
 
-    const onButtonPress = (_: Event) => {
+    const onButtonPress = (_: GestureResponderEvent) => {
         navigation.navigate('Shake');
     }
-    const goToTap = (_: Event) => {
+    const goToTap = (_: GestureResponderEvent) => {
         navigation.navigate('Tap');
     }
 
-    const goToWebRTC = (_: Event) => {
+    const goToWebRTC = (_: GestureResponderEvent) => {
         navigation.navigate('WebRTC');
     }
 
-    const goToQRScanner = (_: Event) => {
+    const goToQRScanner = (_: GestureResponderEvent) => {
         navigation.navigate('QRScanner');
     }
-    const goToNIS = (_: Event) => {
+    const goToNIS = (_: GestureResponderEvent) => {
         navigation.navigate('NameInputScreen');
     }
 
