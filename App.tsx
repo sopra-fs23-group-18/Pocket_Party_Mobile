@@ -21,7 +21,7 @@ import { JoinScreen } from './pages/JoinScreen';
 import { ShakeScreen } from './pages/ShakeScreen';
 import { TapScreen } from './pages/TapScreen';
 import { WebRTCTestScreen } from './pages/WebRTCTestScreen';
-import { NameInputScreen } from './pages/NameInputScreen';
+import NameInputScreen from './pages/NameInputScreen';
 import QRScanner from './pages/QRScanner';
 
 const Stack = createNativeStackNavigator();

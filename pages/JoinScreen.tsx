@@ -24,7 +24,7 @@ export const JoinScreen = (props: NativeStackScreenProps<any>): JSX.Element => {
 
     const goToQRScanner = (_: Event) => {
         navigation.navigate('QRScanner');
-        
+    }
     const goToNIS = (_: Event) => {
         navigation.navigate('NameInputScreen');
     }
@@ -38,4 +38,4 @@ export const JoinScreen = (props: NativeStackScreenProps<any>): JSX.Element => {
             <Button title="Go to NameInputScreen" onPress={goToNIS} />
 
         </View>)
-}
+};
