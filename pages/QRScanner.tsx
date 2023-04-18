@@ -3,7 +3,7 @@ import { AppRegistry, StyleSheet, Text, TouchableOpacity, Linking } from 'react-
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import NumberInputField from '../components/NumberInputfield';
-
+import { Dimensions } from 'react-native';
 export default class QRScanner extends Component {
   onSuccess = (e: { data: string; }) => {
     Linking.openURL(e.data).catch(err =>
@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 20,
     textAlign: 'center',
-    color: '#53A57D'
+    color: '#53A57D',
+    width: Dimensions.get('window').width / 2,
   },
 
   buttonText: {
