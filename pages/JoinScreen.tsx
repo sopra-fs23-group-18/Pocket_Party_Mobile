@@ -21,6 +21,10 @@ export const JoinScreen = (props: NativeStackScreenProps<any>): JSX.Element => {
     const goToWebRTC = (_: Event) => {
         navigation.navigate('WebRTC');
     }
+
+    const goToQRScanner = (_: Event) => {
+        navigation.navigate('QRScanner');
+        
     const goToNIS = (_: Event) => {
         navigation.navigate('NameInputScreen');
     }
@@ -30,6 +34,8 @@ export const JoinScreen = (props: NativeStackScreenProps<any>): JSX.Element => {
             <Button title="Go to shake detection" onPress={onButtonPress} />
             <Button title="Go to WebRTC demo" onPress={goToWebRTC} />
             <Button title="Go to Tap" onPress={goToTap} />
+            <Button title="Go to QRScanner" onPress={goToQRScanner} />
             <Button title="Go to NameInputScreen" onPress={goToNIS} />
+
         </View>)
 }
