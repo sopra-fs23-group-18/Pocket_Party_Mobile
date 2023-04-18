@@ -1,11 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, TextInput, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import { Dimensions } from 'react-native';
 import { createAvatar } from '@dicebear/core';
 import { bottts } from '@dicebear/collection';
 import { SvgXml } from 'react-native-svg';
+import { WebSocketContext } from '../App';
+import  {ActivationState} from '@stomp/stompjs'
 
 const NameInputScreen = () => {
+    const connections = useContext(WebSocketContext);
+
+    const onPlayerJoined = (data: any) => {
+        console.log(`TODO: SAVE registered player data ${data.body}`);
+    }
+    
+    useEffect(() => {
+        if(connections.stompConnection.state === ActivationState.ACTIVE){
+            connections.stompConnection.subscribe(`/user/queue/join`, onPlayerJoined);
+            return;
+        }
+        connections.stompConnection.onConnect = (_) => {
+            connections.stompConnection.subscribe(`/user/queue/join`, onPlayerJoined);
+        };
+        //Here we activate the stomp connection only needed to call once.
+        connections.stompConnection.activate();
+
+    }, [connections])
+
     const [name, setName] = useState('');
     const [avatar, setAvatar] = useState('');
     const defaultAvatar = createAvatar(bottts, {
@@ -24,6 +45,20 @@ const NameInputScreen = () => {
             size: 32
         }).toString();
         setAvatar(avatar);
+
+        const player = {
+            nickname: name
+        };
+
+        if(connections.stompConnection.state === ActivationState.ACTIVE){
+            connections.stompConnection.publish({
+                destination: `/lobbies/${1}`,
+                body: JSON.stringify(player)
+            })
+            return;   
+        }
+       
+        //TODO Handle no internet connection
     };
 
     useEffect(() => {
