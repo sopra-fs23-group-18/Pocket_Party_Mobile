@@ -43,6 +43,7 @@ function App(): JSX.Element {
         <Stack.Screen name="Tap" component={TapScreen} />
         <Stack.Screen name="WebRTC" component={WebRTCTestScreen} />
         <Stack.Screen name="QRScanner" component={QRScanner} />
+        <Stack.Screen name="NameInputScreen" component={NameInputScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
