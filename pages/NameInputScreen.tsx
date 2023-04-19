@@ -7,6 +7,7 @@ import { SvgXml } from 'react-native-svg';
 import { WebSocketContext } from '../App';
 import { ActivationState } from '@stomp/stompjs'
 import { NativeStackScreenProps } from "@react-navigation/native-stack/lib/typescript/src/types";
+import Player from '../models/Player';
 const NameInputScreen = (props: NativeStackScreenProps<any>) => {
     const connections = useContext(WebSocketContext);
     const { navigation } = props;
@@ -37,12 +38,13 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
         console.log('Button pressed');
         const avatar = createAvatar(bottts, {
             seed: name,
-            size: 128
+            size: 128,
         }).toString();
         navigation.navigate("WaitingScreen", { avatar });
 
-        const player = {
-            nickname: name
+        const player: Player = {
+            nickname: name,
+            avatar: avatar
         };
 
         if (connections.stompConnection.state === ActivationState.ACTIVE) {
