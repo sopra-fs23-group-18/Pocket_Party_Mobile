@@ -4,11 +4,14 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import NumberInputField from '../components/NumberInputfield';
 import { Dimensions } from 'react-native';
+
 export default class QRScanner extends Component {
+  state = {
+    scannedCode: '',
+  };
+
   onSuccess = (e: { data: string; }) => {
-    Linking.openURL(e.data).catch(err =>
-      console.error('An error occured', err)
-    );
+    this.setState({ scannedCode: e.data });
   };
 
   render() {
@@ -16,14 +19,14 @@ export default class QRScanner extends Component {
       <QRCodeScanner
         onRead={this.onSuccess}
         reactivateTimeout={3000}
-        flashMode={RNCamera.Constants.FlashMode.torch}
+        flashMode={RNCamera.Constants.FlashMode.auto}
         topContent={
           <Text style={styles.centerText}>
             Scan the QR-Code on the Pocket-Party host device!
           </Text>
         }
         bottomContent={
-          <NumberInputField />
+          <NumberInputField scannedCode={this.state.scannedCode} />
         }
       />
     );
