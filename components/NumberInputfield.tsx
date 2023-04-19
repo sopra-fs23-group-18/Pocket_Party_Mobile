@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { Dimensions } from 'react-native';
+import { NativeStackScreenProps } from "@react-navigation/native-stack/lib/typescript/src/types";
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
     scannedCode: string;
 };
 
-const NumberInputField = ({ scannedCode }: Props) => {
+const NumberInputField = ({ scannedCode }: Props, props: NativeStackScreenProps<any>) => {
     const [value, setValue] = useState<number | undefined>(undefined);
+    const navigation = useNavigation();
 
     useEffect(() => {
         if (scannedCode != '') {
-            setValue(parseInt(scannedCode));
+            handleTextChange(scannedCode);
         }
     }, [scannedCode]);
 
@@ -19,10 +22,12 @@ const NumberInputField = ({ scannedCode }: Props) => {
         const parsedValue = parseInt(text);
         if (!isNaN(parsedValue)) {
             setValue(parsedValue);
-            const length = value?.toString().length;
-            if (length == 6) {
-                //TODO Sven: set right number
-                //TODO Sven: send number to backend for joining lobby
+            const length = parsedValue?.toString().length;
+            console.log(value)
+            console.log(length)
+            if (length === 6) {
+                console.log("Scanned!")
+                navigation.navigate("NameInputScreen" as never, { inviteCode: parsedValue } as never);
             }
         } else {
             setValue(undefined);

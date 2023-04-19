@@ -22,7 +22,7 @@ import { ShakeScreen } from './pages/ShakeScreen';
 import { TapScreen } from './pages/TapScreen';
 import { WebRTCTestScreen } from './pages/WebRTCTestScreen';
 import NameInputScreen from './pages/NameInputScreen';
-import QRScanner from './pages/QRScanner';
+import { QRScanner } from './pages/QRScanner';
 import { WebSocketConnection } from './util/WebRTC';
 import { getWsUrl } from './util/getDomain';
 import { Client } from '@stomp/stompjs'

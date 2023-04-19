@@ -10,7 +10,8 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack/lib/types
 import Player from '../models/Player';
 const NameInputScreen = (props: NativeStackScreenProps<any>) => {
     const connections = useContext(WebSocketContext);
-    const { navigation } = props;
+    const { navigation, route } = props;
+    const { inviteCode }: any = route.params;
     const onPlayerJoined = (data: any) => {
         console.log(`TODO: SAVE registered player data ${data.body}`);
     }
@@ -49,7 +50,7 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
 
         if (connections.stompConnection.state === ActivationState.ACTIVE) {
             connections.stompConnection.publish({
-                destination: `/lobbies/${1}`,
+                destination: `/lobbies/${inviteCode}`,
                 body: JSON.stringify(player)
             })
             return;

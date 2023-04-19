@@ -1,36 +1,34 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { AppRegistry, StyleSheet, Text, TouchableOpacity, Linking } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import NumberInputField from '../components/NumberInputfield';
 import { Dimensions } from 'react-native';
 
-export default class QRScanner extends Component {
-  state = {
-    scannedCode: '',
+export const QRScanner = (): JSX.Element => {
+  const [scannercode, setScannercode] = useState('')
+
+  const onSuccess = (e: { data: string; }) => {
+    setScannercode(e.data);
   };
 
-  onSuccess = (e: { data: string; }) => {
-    this.setState({ scannedCode: e.data });
-  };
 
-  render() {
-    return (
-      <QRCodeScanner
-        onRead={this.onSuccess}
-        reactivateTimeout={3000}
-        flashMode={RNCamera.Constants.FlashMode.auto}
-        topContent={
-          <Text style={styles.centerText}>
-            Scan the QR-Code on the Pocket-Party host device!
-          </Text>
-        }
-        bottomContent={
-          <NumberInputField scannedCode={this.state.scannedCode} />
-        }
-      />
-    );
-  }
+  return (
+    <QRCodeScanner
+      onRead={onSuccess}
+      reactivateTimeout={3000}
+      flashMode={RNCamera.Constants.FlashMode.auto}
+      topContent={
+        <Text style={styles.centerText}>
+          Scan the QR-Code on the Pocket-Party host device!
+        </Text>
+      }
+      bottomContent={
+        <NumberInputField scannedCode={scannercode} />
+      }
+    />
+  );
+
 }
 
 const styles = StyleSheet.create({
