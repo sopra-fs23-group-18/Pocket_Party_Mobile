@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, { createContext } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import {
   StyleSheet,
   useColorScheme,
@@ -39,19 +39,24 @@ export const WebSocketContext = createContext(null as unknown as WebSocketContex
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const [connections, setConnections] = useState({
+    signalingConnection: new WebSocketConnection(getWsUrl() + "/socket"), stompConnection: new Client({
+      brokerURL: getWsUrl() + "/game",
+      forceBinaryWSFrames: true,
+      appendMissingNULLonIncoming: true
+    })
+  })
 
+  useEffect(() => {
+     //Here we activate the stomp connection only needed to call once.
+     connections.stompConnection.activate();
+  }, [])
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
   return (
-    <WebSocketContext.Provider value={{
-      signalingConnection: new WebSocketConnection(getWsUrl() + "/socket"), stompConnection: new Client({
-        brokerURL: getWsUrl() + "/game",
-        forceBinaryWSFrames: true,
-        appendMissingNULLonIncoming: true
-      })
-    }}>
+    <WebSocketContext.Provider value={connections}>
       <NavigationContainer >
         <Stack.Navigator initialRouteName="Join" screenOptions={{
           headerShown: false,

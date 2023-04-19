@@ -24,8 +24,6 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
         connections.stompConnection.onConnect = (_) => {
             connections.stompConnection.subscribe(`/user/queue/join`, onPlayerJoined);
         };
-        //Here we activate the stomp connection only needed to call once.
-        connections.stompConnection.activate();
 
     }, [connections])
 
@@ -53,7 +51,12 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
                 destination: `/lobbies/${inviteCode}`,
                 body: JSON.stringify(player)
             })
+            console.log("SENDED THIS SHIT");
+            
             return;
+        }else{
+            console.log("UPSI");
+            
         }
 
         //TODO Handle no internet connection
