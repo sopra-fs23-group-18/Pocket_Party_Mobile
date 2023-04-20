@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
         bottom: 0.1 * Dimensions.get('window').height,
     },
     buttonText: {
-        fontFamily: 'Outfit',
         fontStyle: 'normal',
         fontWeight: '400',
         fontSize: 32,
