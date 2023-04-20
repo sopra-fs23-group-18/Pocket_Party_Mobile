@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     label: {
-        fontFamily: 'Outfit',
         fontStyle: 'normal',
         fontWeight: '400',
         fontSize: 16,
