@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "postinstall": "react-native setup-ios-permissions && pod-install",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint .",
@@ -30,6 +31,7 @@
     "text-encoding": "^0.7.0"
   },
   "devDependencies": {
+    "pod-install": "0.1.38",
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
@@ -48,5 +50,16 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "reactNativePermissionsIOS": [
+    "Camera"
+  ],
+  "resolutions": {
+    "react-native-permissions": "^3.8.0"
+  },
+  "overrides": {
+    "react-native-qrcode-scanner": {
+      "react-native-permissions": "^3.8.0"
+    }
   }
 }

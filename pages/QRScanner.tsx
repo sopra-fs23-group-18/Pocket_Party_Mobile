@@ -33,7 +33,6 @@ export const QRScanner = (): JSX.Element => {
 
 const styles = StyleSheet.create({
   centerText: {
-    fontFamily: 'Outfit',
     fontStyle: 'normal',
     fontWeight: '400',
     fontSize: 16,
