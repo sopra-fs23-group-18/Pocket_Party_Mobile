@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import {
   StyleSheet,
   useColorScheme,
@@ -17,26 +17,53 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { JoinScreen } from './pages/JoinScreen';
-import { ShakeScreen } from './pages/ShakeScreen';
+import { JoinScreen } from './components/pages/JoinScreen';
+import { ShakeScreen } from './components/pages/ShakeScreen';
+import { TapScreen } from './components/pages/TapScreen';
+import { WebRTCTestScreen } from './components/pages/WebRTCTestScreen';
+import NameInputScreen from './components/pages/NameInputScreen';
+import { QRScanner } from './components/pages/QRScanner';
+import { WebSocketConnection } from './util/WebRTC';
+import { getWsUrl } from './util/getDomain';
+import { Client } from '@stomp/stompjs'
+import WaitingScreen from './components/pages/WaitingScreen';
+import { AppNavigation } from './components/navigation/AppNavigation';
 
 const Stack = createNativeStackNavigator();
 
+type WebSocketContextType = {
+  signalingConnection: WebSocketConnection,
+  stompConnection: Client
+}
+export const WebSocketContext = createContext(null as unknown as WebSocketContextType);
+
+
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const [connections, setConnections] = useState({
+    signalingConnection: new WebSocketConnection(getWsUrl() + "/socket"), stompConnection: new Client({
+      brokerURL: getWsUrl() + "/game",
+      forceBinaryWSFrames: true,
+      appendMissingNULLonIncoming: true
+    })
+  })
 
+  useEffect(() => {
+     //Here we activate the stomp connection only needed to call once.
+     connections.stompConnection.activate();
+  }, [])
+  
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
   return (
-    <NavigationContainer>
-    <Stack.Navigator initialRouteName="Join" screenOptions={{
-              headerShown: false,}}>
-      <Stack.Screen name="Join" component={JoinScreen} />
-      <Stack.Screen name="Shake" component={ShakeScreen} />
-    </Stack.Navigator>
-  </NavigationContainer>
+    <WebSocketContext.Provider value={connections}>
+      <NavigationContainer >
+        <AppNavigation/>
+      </NavigationContainer >
+    </WebSocketContext.Provider >
+
   );
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { ShakeGlyph } from "../components/ShakeGlyph";
-import { listenForShake, stopInputReading } from "../util/InputHandler";
+import { ShakeGlyph } from "../ui/ShakeGlyph";
+import { listenForShake, stopInputReading } from "../../util/InputHandler";
 
 
 export const ShakeScreen = (): JSX.Element => {
