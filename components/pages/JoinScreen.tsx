@@ -1,7 +1,7 @@
-import { NavigationProp, NavigatorScreenParams, TypedNavigator } from "@react-navigation/native";
-import { NativeStackNavigationProp, NativeStackScreenProps, } from "@react-navigation/native-stack/lib/typescript/src/types";
+import {NativeStackScreenProps, } from "@react-navigation/native-stack/lib/typescript/src/types";
 import React from "react";
-import { Button, GestureResponderEvent, Text, View } from "react-native";
+import { GestureResponderEvent, View } from "react-native";
+import { Button } from "../ui/Button";
 
 
 // type JoinScreenProps = {
@@ -22,7 +22,7 @@ export const JoinScreen = (props: NativeStackScreenProps<any>): JSX.Element => {
         navigation.navigate('WebRTC');
     }
 
-    const goToQRScanner = (_: GestureResponderEvent) => {
+    const goToQRScanner = () => {
         navigation.navigate('QRScanner');
     }
     const goToNIS = (_: GestureResponderEvent) => {
@@ -31,10 +31,6 @@ export const JoinScreen = (props: NativeStackScreenProps<any>): JSX.Element => {
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Button title="Go to shake detection" onPress={onButtonPress} />
-            <Button title="Go to WebRTC demo" onPress={goToWebRTC} />
-            <Button title="Go to Tap" onPress={goToTap} />
-            <Button title="Join" onPress={goToQRScanner} />
-            <Button title="Go to NameInputScreen" onPress={goToNIS} />
+           <Button onPress={goToQRScanner} text="Join a game"/>
         </View>)
 };

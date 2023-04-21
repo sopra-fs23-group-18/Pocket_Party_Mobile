@@ -1,8 +1,11 @@
 import { SvgXml } from "react-native-svg";
 import { View, StyleSheet, Animated, Easing } from "react-native";
+import { useContext } from "react";
+import { PlayerContext } from "../navigation/AppNavigation";
 
-const WaitingScreen = ({ route }: { route: any }) => {
-    const { avatar } = route.params;
+const WaitingScreen = () => {
+    const playerContext = useContext(PlayerContext);
+
     const spinValue = new Animated.Value(0);
 
     Animated.loop(
@@ -21,7 +24,7 @@ const WaitingScreen = ({ route }: { route: any }) => {
 
     return (
         <View style={styles.container}>
-            <SvgXml xml={avatar} style={styles.avatar} />
+            <SvgXml xml={playerContext.player.avatar} style={styles.avatar} />
             <View style={styles.loader}>
                 <Animated.View
                     style={[

@@ -17,16 +17,17 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { JoinScreen } from './pages/JoinScreen';
-import { ShakeScreen } from './pages/ShakeScreen';
-import { TapScreen } from './pages/TapScreen';
-import { WebRTCTestScreen } from './pages/WebRTCTestScreen';
-import NameInputScreen from './pages/NameInputScreen';
-import { QRScanner } from './pages/QRScanner';
+import { JoinScreen } from './components/pages/JoinScreen';
+import { ShakeScreen } from './components/pages/ShakeScreen';
+import { TapScreen } from './components/pages/TapScreen';
+import { WebRTCTestScreen } from './components/pages/WebRTCTestScreen';
+import NameInputScreen from './components/pages/NameInputScreen';
+import { QRScanner } from './components/pages/QRScanner';
 import { WebSocketConnection } from './util/WebRTC';
 import { getWsUrl } from './util/getDomain';
 import { Client } from '@stomp/stompjs'
-import WaitingScreen from './pages/WaitingScreen';
+import WaitingScreen from './components/pages/WaitingScreen';
+import { AppNavigation } from './components/navigation/AppNavigation';
 
 const Stack = createNativeStackNavigator();
 
@@ -51,6 +52,7 @@ function App(): JSX.Element {
      //Here we activate the stomp connection only needed to call once.
      connections.stompConnection.activate();
   }, [])
+  
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -58,17 +60,7 @@ function App(): JSX.Element {
   return (
     <WebSocketContext.Provider value={connections}>
       <NavigationContainer >
-        <Stack.Navigator initialRouteName="Join" screenOptions={{
-          headerShown: false,
-        }}>
-          <Stack.Screen name="Join" component={JoinScreen} />
-          <Stack.Screen name="Shake" component={ShakeScreen} />
-          <Stack.Screen name="Tap" component={TapScreen} />
-          <Stack.Screen name="WebRTC" component={WebRTCTestScreen} />
-          <Stack.Screen name="QRScanner" component={QRScanner} />
-          <Stack.Screen name="NameInputScreen" component={NameInputScreen} />
-          <Stack.Screen name="WaitingScreen" component={WaitingScreen} />
-        </Stack.Navigator>
+        <AppNavigation/>
       </NavigationContainer >
     </WebSocketContext.Provider >
 

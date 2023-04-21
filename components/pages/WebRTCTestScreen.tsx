@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Button, View } from "react-native";
-import { getWsUrl } from "../util/getDomain";
-import { PeerConnection, WebSocketConnection } from "../util/WebRTC";
+import { getWsUrl } from "../../util/getDomain";
+import { PeerConnection, WebSocketConnection } from "../../util/WebRTC";
 
 
 export const WebRTCTestScreen = (): JSX.Element => {

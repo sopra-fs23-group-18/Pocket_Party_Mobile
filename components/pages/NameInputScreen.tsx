@@ -4,16 +4,25 @@ import { Dimensions } from 'react-native';
 import { createAvatar } from '@dicebear/core';
 import { bottts } from '@dicebear/collection';
 import { SvgXml } from 'react-native-svg';
-import { WebSocketContext } from '../App';
+import { WebSocketContext } from '../../App';
 import { ActivationState } from '@stomp/stompjs'
 import { NativeStackScreenProps } from "@react-navigation/native-stack/lib/typescript/src/types";
-import Player from '../models/Player';
+import Player from '../../models/Player';
+import { Button } from '../ui/Button';
+import { AppState, AppStateContext, PlayerContext } from '../navigation/AppNavigation';
 const NameInputScreen = (props: NativeStackScreenProps<any>) => {
     const connections = useContext(WebSocketContext);
+    const appStateContext = useContext(AppStateContext);
+    const playerContext = useContext(PlayerContext);
+
     const { navigation, route } = props;
     const { inviteCode }: any = route.params;
     const onPlayerJoined = (data: any) => {
-        console.log(`TODO: SAVE registered player data ${data.body}`);
+        // console.log(`TODO: SAVE registered player data ${data.body}`);
+        const player: Player = JSON.parse(data.body);
+        playerContext.setPlayer(player)
+        appStateContext.setAppState(AppState.WAITING)
+        
     }
 
     useEffect(() => {
@@ -39,7 +48,7 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
             seed: name,
             size: 128,
         }).toString();
-        navigation.navigate("WaitingScreen", { avatar });
+        
 
         const player: Player = {
             nickname: name,
@@ -59,6 +68,7 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
             
         }
 
+        
         //TODO Handle no internet connection
     };
 
@@ -71,9 +81,7 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
                 value={name}
                 onChangeText={handleNameChange}
             />
-            <TouchableOpacity style={styles.button} onPress={handleReadyPress}>
-                <Text style={styles.buttonText}>Ready</Text>
-            </TouchableOpacity>
+            <Button onPress={handleReadyPress} text='Ready'/>
         </View>
     );
 };
@@ -100,25 +108,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 4,
-    },
-    button: {
-        width: 0.8 * Dimensions.get('window').width,
-        height: 0.1 * Dimensions.get('window').height,
-        borderRadius: 13,
-        backgroundColor: '#53A57D',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 0.05 * Dimensions.get('window').height,
-        position: 'absolute',
-        bottom: 0.1 * Dimensions.get('window').height,
-    },
-    buttonText: {
-        fontStyle: 'normal',
-        fontWeight: '400',
-        fontSize: 32,
-        lineHeight: 40,
-        color: '#FFFFFF',
-    },
+    }
 });
 
 export default NameInputScreen;

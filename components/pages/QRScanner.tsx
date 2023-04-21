@@ -1,8 +1,8 @@
-import React, { Component, useState } from 'react';
-import { AppRegistry, StyleSheet, Text, TouchableOpacity, Linking } from 'react-native';
+import React, { useState } from 'react';
+import {StyleSheet, Text } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
-import NumberInputField from '../components/NumberInputfield';
+import NumberInputField from '../ui/NumberInputfield';
 import { Dimensions } from 'react-native';
 
 export const QRScanner = (): JSX.Element => {
