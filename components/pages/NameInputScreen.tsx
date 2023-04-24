@@ -22,7 +22,7 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
         const player: Player = JSON.parse(data.body);
         playerContext.setPlayer(player)
         appStateContext.setAppState(AppState.WAITING)
-        
+
     }
 
     useEffect(() => {
@@ -48,7 +48,7 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
             seed: name,
             size: 128,
         }).toString();
-        
+
 
         const player: Player = {
             nickname: name,
@@ -61,14 +61,14 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
                 body: JSON.stringify(player)
             })
             console.log("SENDED THIS SHIT");
-            
+
             return;
-        }else{
+        } else {
             console.log("UPSI");
-            
+
         }
 
-        
+
         //TODO Handle no internet connection
     };
 
@@ -81,7 +81,7 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
                 value={name}
                 onChangeText={handleNameChange}
             />
-            <Button onPress={handleReadyPress} text='Ready'/>
+            <Button onPress={handleReadyPress} text='Ready' />
         </View>
     );
 };
@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 4,
+        color: "black",
     }
 });
 
