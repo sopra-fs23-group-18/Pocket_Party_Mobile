@@ -1,10 +1,41 @@
 import { SvgXml } from "react-native-svg";
 import { View, StyleSheet, Animated, Easing } from "react-native";
-import { useContext } from "react";
-import { PlayerContext } from "../navigation/AppNavigation";
+import { useContext, useEffect, useState } from "react";
+import { AppState, AppStateContext, PeerConnectionContext, PlayerContext } from "../navigation/AppNavigation";
+import { PeerConnection } from "../../util/WebRTC";
+import { WebSocketContext } from "../../App";
+
 
 const WaitingScreen = () => {
     const playerContext = useContext(PlayerContext);
+    const wsConnections = useContext(WebSocketContext);
+    const appContext = useContext(AppStateContext);
+    const peerConnectionContext = useContext(PeerConnectionContext);
+    
+
+    const onReceive = (msg: any) => {
+        console.log(msg);
+        appContext.setAppState(AppState.IN_GAME)
+    }
+
+    const onConnected = () => {
+        console.log("HERE i want to do somthing maybe probably not");
+        
+    };
+    useEffect(() => {
+        if(peerConnectionContext.peerConnection === null){
+            if(playerContext.player.id === null){
+                console.log("ERORE");
+                return;
+            }
+            const pc = new PeerConnection({
+                webSocketConnection: wsConnections.signalingConnection, onReceive, lobbyId: 11, playerId: playerContext.player.id || -1, onConnected
+            })
+            pc.connect()
+            peerConnectionContext.setPeerConnection(pc)
+        }
+    })
+
 
     const spinValue = new Animated.Value(0);
 

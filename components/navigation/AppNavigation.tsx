@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { createContext, useEffect, useState } from "react"
 import Player from "../../models/Player";
+import { PeerConnection } from "../../util/WebRTC";
 import { JoinScreen } from "../pages/JoinScreen";
 import NameInputScreen from "../pages/NameInputScreen";
 import { QRScanner } from "../pages/QRScanner";
@@ -27,14 +28,22 @@ type PlayerConextType = {
     setPlayer: React.Dispatch<React.SetStateAction<Player>>
 }
 
+type PeerConnectionContextType = {
+    peerConnection: PeerConnection,
+    setPeerConnection: React.Dispatch<React.SetStateAction<PeerConnection>>
+}
+
 export const AppStateContext = createContext(null as unknown as AppStateContextType);
-export const PlayerContext = createContext(null as unknown as PlayerConextType)
+export const PlayerContext = createContext(null as unknown as PlayerConextType);
+export const PeerConnectionContext = createContext(null as unknown as PeerConnectionContextType);
 
 export const AppNavigation = (): JSX.Element => {
     const [appState, setAppState] = useState(AppState.NOT_JOINED);
-    
+
     //TODO maybe persist player information
     const [player, setPlayer] = useState(null as unknown as Player);
+
+    const [peerConnection, setPeerConnection] = useState(null as unknown as PeerConnection);
 
     const renderStack = (appState: AppState) => {
         switch (appState) {
@@ -68,13 +77,15 @@ export const AppNavigation = (): JSX.Element => {
 
     return (
         <AppStateContext.Provider value={{ appState, setAppState }}>
-            <PlayerContext.Provider value={{ player, setPlayer }}>
-                <Stack.Navigator screenOptions={{
-                    headerShown: false,
-                }}>
-                    {renderStack(appState)}
-                </Stack.Navigator>
-            </PlayerContext.Provider>
+            <PeerConnectionContext.Provider value={{ peerConnection, setPeerConnection }}>
+                <PlayerContext.Provider value={{ player, setPlayer }}>
+                    <Stack.Navigator screenOptions={{
+                        headerShown: false,
+                    }}>
+                        {renderStack(appState)}
+                    </Stack.Navigator>
+                </PlayerContext.Provider>
+            </PeerConnectionContext.Provider>
         </AppStateContext.Provider>
     );
 }

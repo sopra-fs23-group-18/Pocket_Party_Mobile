@@ -1,11 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { ShakeGlyph } from "../ui/ShakeGlyph";
 import { listenForShake, stopInputReading } from "../../util/InputHandler";
+import { AppState, AppStateContext, PeerConnectionContext } from "../navigation/AppNavigation";
+import { Input, InputType } from "../../types/Input";
 
 
 export const ShakeScreen = (): JSX.Element => {
+    const peerConnectionContext = useContext(PeerConnectionContext);
+    const appContext = useContext(AppStateContext);
+
+    const onReceive = (msg:any) => {
+        console.log("Received a msg");
+        
+        appContext.setAppState(AppState.WAITING);
+    }
+
     const onShake = () => {
+        const input: Input = {
+            inputType: InputType.SHAKE,
+        }
+        peerConnectionContext.peerConnection?.send(JSON.stringify(input))
         console.log("Shake detectd");
     }
 

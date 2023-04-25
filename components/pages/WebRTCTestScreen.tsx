@@ -1,27 +1,46 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Button, View } from "react-native";
+import { WebSocketContext } from "../../App";
 import { getWsUrl } from "../../util/getDomain";
 import { PeerConnection, WebSocketConnection } from "../../util/WebRTC";
 
 
 export const WebRTCTestScreen = (): JSX.Element => {
     const webSocketConnection = useRef(null as unknown as WebSocketConnection);
-    const peerConnection = useRef(null as unknown as PeerConnection);
+    const [peerConnection, setPeerConnection] = useState(null as unknown as PeerConnection);
+    const connections = useContext(WebSocketContext);
 
     useEffect(() => {
         webSocketConnection.current = new WebSocketConnection(getWsUrl()+"/socket");
     }, []);
 
+    const onReceive = (msg: any) => {
+        console.log(msg);
+    }
+
+    const onConnected = (pc: PeerConnection) => {
+        pc.send("HEllo web")
+        console.log("on Connected called");
+
+        
+    }
     const connect = (_: Event) => {
-        if(peerConnection.current === null){
-            peerConnection.current = new PeerConnection({webSocketConnection: webSocketConnection.current, onReceive: (msg: any) => {
-                console.log(`Received msg from web app ${msg}`); 
-            }})
-            peerConnection.current.connect();
+        if(peerConnection === null){
+            const pc = new PeerConnection({
+                webSocketConnection: connections.signalingConnection, onReceive, lobbyId: 1, playerId: 1, onConnected
+            })
+            pc.connect();
+            setPeerConnection(pc);
         }
     }
+
+    useEffect(() => {
+        console.log(peerConnection?._peerConnection);
+        
+    }, [peerConnection?._peerConnection?._pcId])
+
     const sendMessage = (_: Event) => {
-       peerConnection.current?.send("Hello Web from mobile")
+       peerConnection?.send("Hello Web from mobile")
     } 
 
     return (
