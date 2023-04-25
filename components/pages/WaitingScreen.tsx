@@ -29,7 +29,7 @@ const WaitingScreen = () => {
                 return;
             }
             const pc = new PeerConnection({
-                webSocketConnection: wsConnections.signalingConnection, onReceive, lobbyId: 11, playerId: playerContext.player.id || -1, onConnected
+                webSocketConnection: wsConnections.signalingConnection, onReceive, lobbyId: playerContext.player.lobbyId || -1, playerId: playerContext.player.id || -1, onConnected
             })
             pc.connect()
             peerConnectionContext.setPeerConnection(pc)
