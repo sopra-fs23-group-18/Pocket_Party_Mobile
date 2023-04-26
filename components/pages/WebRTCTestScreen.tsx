@@ -27,7 +27,7 @@ export const WebRTCTestScreen = (): JSX.Element => {
     const connect = (_: Event) => {
         if(peerConnection === null){
             const pc = new PeerConnection({
-                webSocketConnection: connections.signalingConnection, onReceive, lobbyId: 1, playerId: 1, onConnected
+                webSocketConnection: connections.signalingConnection, onReceive, lobbyId: 67, playerId: 70, onConnected
             })
             pc.connect();
             setPeerConnection(pc);

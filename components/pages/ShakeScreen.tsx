@@ -2,13 +2,17 @@ import React, { useContext, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { ShakeGlyph } from "../ui/ShakeGlyph";
 import { listenForShake, stopInputReading } from "../../util/InputHandler";
-import { AppState, AppStateContext, PeerConnectionContext } from "../navigation/AppNavigation";
+import { AppState, AppStateContext, PeerConnectionContext, PlayerContext } from "../navigation/AppNavigation";
 import { Input, InputType } from "../../types/Input";
+import { WebSocketContext } from "../../App";
+import { ActivationState } from "@stomp/stompjs";
 
 
 export const ShakeScreen = (): JSX.Element => {
-    const peerConnectionContext = useContext(PeerConnectionContext);
+    const connections = useContext(WebSocketContext);
+    // const peerConnectionContext = useContext(PeerConnectionContext);
     const appContext = useContext(AppStateContext);
+    const playerContext = useContext(PlayerContext);
 
     const onReceive = (msg:any) => {
         console.log("Received a msg");
@@ -20,7 +24,11 @@ export const ShakeScreen = (): JSX.Element => {
         const input: Input = {
             inputType: InputType.SHAKE,
         }
-        peerConnectionContext.peerConnection?.send(JSON.stringify(input))
+        connections.stompConnection.publish({
+            destination: `/lobbies/${playerContext.player.lobbyId}/players/${playerContext.player.id}/input`,
+            body: JSON.stringify(input)
+        })
+        // peerConnectionContext.peerConnection?.send(JSON.stringify(input))
         console.log("Shake detectd");
     }
 
@@ -30,6 +38,17 @@ export const ShakeScreen = (): JSX.Element => {
         return () => {
             stopInputReading();
         }
+    }, [])
+
+    useEffect(() => {
+        if (connections.stompConnection.state === ActivationState.ACTIVE) {
+            connections.stompConnection.subscribe(`/topic/players/${playerContext.player.id}/signal`, onReceive);
+            return;
+        }
+        
+        connections.stompConnection.onConnect = (_) => {
+            connections.stompConnection.subscribe(`/topic/players/${playerContext.player.id}/signal`, onReceive);
+        };
     }, [])
 
     return (

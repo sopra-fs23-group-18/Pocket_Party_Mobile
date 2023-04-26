@@ -144,6 +144,12 @@ export class PeerConnection {
                     // this._dataChannel?.close();
                     // this._dataChannel = null;
                     break;
+                case "failed":
+                    if (this._active) {
+                        // this._reconnect()
+                        this.close();
+                        this.connect();
+                    }
                 default:
                     break;
             }
