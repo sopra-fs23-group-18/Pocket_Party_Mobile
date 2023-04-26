@@ -16,7 +16,21 @@ const WaitingScreen = () => {
 
     const onReceive = (msg: any) => {
         console.log(msg);
-        appContext.setAppState(AppState.IN_GAME)
+        const data = JSON.parse(msg.body);
+        console.log(data.signal);
+        console.log(data.minigame);
+        switch (data.minigame) {
+            case "TIMING_GAME":
+                appContext.setAppState(AppState.SHAKE);
+                break;
+            case "TAPPING_GAME":
+                appContext.setAppState(AppState.TAP);
+                break;
+            default:
+                appContext.setAppState(AppState.SHAKE);
+                break;
+        }
+
     }
 
     const onConnected = () => {

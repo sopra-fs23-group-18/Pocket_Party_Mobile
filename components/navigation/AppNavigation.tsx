@@ -13,6 +13,8 @@ import { WebRTCTestScreen } from "../pages/WebRTCTestScreen";
 const Stack = createNativeStackNavigator();
 
 export enum AppState {
+    SHAKE,
+    TAP,
     NOT_JOINED,
     WAITING,
     IN_GAME,
@@ -55,12 +57,17 @@ export const AppNavigation = (): JSX.Element => {
                         <Stack.Screen name="NameInputScreen" component={NameInputScreen} />
                     </>
                 )
-            case AppState.IN_GAME:
+            case AppState.SHAKE:
                 return (
                     <>
                         <Stack.Screen name="Shake" component={ShakeScreen} />
-                        <Stack.Screen name="Tap" component={TapScreen} />
                         <Stack.Screen name="WebRTC" component={WebRTCTestScreen} />
+                    </>
+                )
+            case AppState.TAP:
+                return (
+                    <>
+                        <Stack.Screen name="Tap" component={TapScreen} />
                     </>
                 )
             case AppState.WAITING:

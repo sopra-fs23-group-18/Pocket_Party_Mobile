@@ -7,5 +7,6 @@ export enum InputType{
 
 export type Input = {
     inputType: InputType,
-    rawData?: {x: number, y: number, z: number}
+    rawData?: {x: number, y: number, z: number},
+    count?: {count: number}
 }
