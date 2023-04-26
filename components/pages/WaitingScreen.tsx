@@ -11,51 +11,31 @@ const WaitingScreen = () => {
     const playerContext = useContext(PlayerContext);
     const connections = useContext(WebSocketContext);
     const appContext = useContext(AppStateContext);
-    const peerConnectionContext = useContext(PeerConnectionContext);
     
-
     const onReceive = (msg: any) => {
-        console.log(msg);
         const data = JSON.parse(msg.body);
-        console.log(data.signal);
-        console.log(data.minigame);
-        switch (data.minigame) {
-            case "TIMING_GAME":
-                appContext.setAppState(AppState.SHAKE);
-                break;
-            case "TAPPING_GAME":
-                appContext.setAppState(AppState.TAP);
-                break;
-            default:
-                appContext.setAppState(AppState.SHAKE);
-                break;
+        if(data.signal === "START"){
+            switch (data.minigame) {
+                case "TIMING_GAME":
+                    appContext.setAppState(AppState.SHAKE);
+                    break;
+                case "TAPPING_GAME":
+                    appContext.setAppState(AppState.TAP);
+                    break;
+                default:
+                    break;
+            }
         }
+        
 
     }
-
-    const onConnected = () => {
-        console.log("HERE i want to do somthing maybe probably not");
-        
-    };
-    // useEffect(() => {
-    //     if(peerConnectionContext.peerConnection === null){
-    //         if(playerContext.player.id === null){
-    //             console.log("ERORE");
-    //             return;
-    //         }
-    //         const pc = new PeerConnection({
-    //             webSocketConnection: wsConnections.signalingConnection, onReceive, lobbyId: playerContext.player.lobbyId || -1, playerId: playerContext.player.id || -1, onConnected
-    //         })
-    //         pc.connect()
-    //         peerConnectionContext.setPeerConnection(pc)
-    //     }
-    // }, [])
 
     useEffect(() => {
         if (connections.stompConnection.state === ActivationState.ACTIVE) {
             connections.stompConnection.subscribe(`/topic/players/${playerContext.player.id}/signal`, onReceive);
             return;
         }
+        console.log("stomp not active");
         
         connections.stompConnection.onConnect = (_) => {
             connections.stompConnection.subscribe(`/topic/players/${playerContext.player.id}/signal`, onReceive);

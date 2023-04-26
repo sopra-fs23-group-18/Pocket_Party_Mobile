@@ -15,9 +15,10 @@ export const ShakeScreen = (): JSX.Element => {
     const playerContext = useContext(PlayerContext);
 
     const onReceive = (msg:any) => {
-        console.log("Received a msg");
-        
-        appContext.setAppState(AppState.WAITING);
+        const data = JSON.parse(msg.body);
+        if(data.signal === "STOP"){
+            appContext.setAppState(AppState.WAITING);
+        }
     }
 
     const onShake = () => {
@@ -42,9 +43,12 @@ export const ShakeScreen = (): JSX.Element => {
 
     useEffect(() => {
         if (connections.stompConnection.state === ActivationState.ACTIVE) {
+            console.log("got called");
+
             connections.stompConnection.subscribe(`/topic/players/${playerContext.player.id}/signal`, onReceive);
             return;
         }
+        console.log("got called");
         
         connections.stompConnection.onConnect = (_) => {
             connections.stompConnection.subscribe(`/topic/players/${playerContext.player.id}/signal`, onReceive);

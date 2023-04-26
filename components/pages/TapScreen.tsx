@@ -16,9 +16,10 @@ export const TapScreen = (): JSX.Element => {
     var counter = 0;
 
     const onReceive = (msg:any) => {
-      console.log("Received a msg");
-      
-      appContext.setAppState(AppState.WAITING);
+      const data = JSON.parse(msg.body);
+      if(data.signal === "STOP"){
+        appContext.setAppState(AppState.WAITING);
+      }
   }
 
     const onTap = () => {

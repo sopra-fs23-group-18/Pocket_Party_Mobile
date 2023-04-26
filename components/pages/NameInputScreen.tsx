@@ -20,6 +20,8 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
     const onPlayerJoined = (data: any) => {
         // console.log(`TODO: SAVE registered player data ${data.body}`);
         const player: Player = JSON.parse(data.body);
+        console.log(`IHAVE player id ${player.id}`);
+        
         playerContext.setPlayer(player)
         appStateContext.setAppState(AppState.WAITING)
 
