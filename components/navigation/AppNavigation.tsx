@@ -7,6 +7,7 @@ import NameInputScreen from "../pages/NameInputScreen";
 import { QRScanner } from "../pages/QRScanner";
 import { ShakeScreen } from "../pages/ShakeScreen";
 import { TapScreen } from "../pages/TapScreen";
+import { VibrationScreen } from "../pages/VibrationScreen";
 import WaitingScreen from "../pages/WaitingScreen";
 import { WebRTCTestScreen } from "../pages/WebRTCTestScreen";
 
@@ -15,6 +16,7 @@ const Stack = createNativeStackNavigator();
 export enum AppState {
     SHAKE,
     TAP,
+    VIBRATION,
     NOT_JOINED,
     WAITING,
     IN_GAME,
@@ -61,7 +63,12 @@ export const AppNavigation = (): JSX.Element => {
                 return (
                     <>
                         <Stack.Screen name="Shake" component={ShakeScreen} />
-                        <Stack.Screen name="WebRTC" component={WebRTCTestScreen} />
+                    </>
+                )
+            case AppState.VIBRATION:
+                return (
+                    <>
+                        <Stack.Screen name="Shake" component={VibrationScreen} />
                     </>
                 )
             case AppState.TAP:
