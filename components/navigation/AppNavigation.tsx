@@ -20,6 +20,7 @@ export enum AppState {
     NOT_JOINED,
     WAITING,
     IN_GAME,
+    HOTPOTATO,
 }
 
 type AppStateContextType = {

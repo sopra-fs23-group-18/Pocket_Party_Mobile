@@ -14,8 +14,6 @@ const WaitingScreen = () => {
 
     const onReceive = (msg: any) => {
         const data = JSON.parse(msg.body);
-        console.log(data);
-        
         if (data.signal === "START") {
             switch (data.minigame) {
                 case "TIMING_GAME":
@@ -27,6 +25,8 @@ const WaitingScreen = () => {
                 case "VIBRATION_GAME":
                     appContext.setAppState(AppState.VIBRATION);
                     break;
+                case "HOTPOTATO":
+                    appContext.setAppState(AppState.HOTPOTATO)
                 default:
                     break;
             }
