@@ -1,6 +1,7 @@
 export enum InputType {
     SHAKE,
     TAP,
+    PONG,
     ACCELEROMETER,
     GYROSCOPE
 }
@@ -8,6 +9,6 @@ export enum InputType {
 export type Input = {
     inputType: InputType,
     rawData?: { x: number, y: number, z: number },
-    count?: { count: number },
-    hasTapped?: { hasTapped: boolean }
+    hasTapped?: { hasTapped: boolean },
+    degree?: { degree: number }
 }

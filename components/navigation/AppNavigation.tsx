@@ -8,6 +8,7 @@ import { QRScanner } from "../pages/QRScanner";
 import { ShakeScreen } from "../pages/ShakeScreen";
 import { TapScreen } from "../pages/TapScreen";
 import { VibrationScreen } from "../pages/VibrationScreen";
+import { PongScreen } from "../pages/PongScreen";
 import WaitingScreen from "../pages/WaitingScreen";
 import { WebRTCTestScreen } from "../pages/WebRTCTestScreen";
 
@@ -17,6 +18,7 @@ export enum AppState {
     SHAKE,
     TAP,
     VIBRATION,
+    PONG,
     NOT_JOINED,
     WAITING,
     IN_GAME,
@@ -76,6 +78,12 @@ export const AppNavigation = (): JSX.Element => {
                 return (
                     <>
                         <Stack.Screen name="Tap" component={TapScreen} />
+                    </>
+                )
+            case AppState.PONG:
+                return (
+                    <>
+                        <Stack.Screen name="Pong" component={PongScreen} />
                     </>
                 )
             case AppState.WAITING:

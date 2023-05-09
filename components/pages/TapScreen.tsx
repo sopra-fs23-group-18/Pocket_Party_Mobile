@@ -26,7 +26,7 @@ export const TapScreen = (): JSX.Element => {
       counter++;
       const input: Input = {
           inputType: InputType.TAP,
-          rawData: {x : counter, y : 0, z : 0}
+          rawData: {x: counter, y: 0, z: 0}
       }
       console.log(JSON.stringify(input));
       connections.stompConnection.publish({
