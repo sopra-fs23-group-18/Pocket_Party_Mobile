@@ -3,12 +3,14 @@ export enum InputType {
     TAP,
     PONG,
     ACCELEROMETER,
-    GYROSCOPE
+    GYROSCOPE,
+    VOTE
 }
 
 export type Input = {
     inputType: InputType,
     rawData?: { x: number, y: number, z: number },
     hasTapped?: { hasTapped: boolean },
-    degree?: { degree: number }
+    degree?: { degree: number },
+    voteOption?: number, 
 }

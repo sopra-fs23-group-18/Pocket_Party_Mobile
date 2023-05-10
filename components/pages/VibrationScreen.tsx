@@ -1,14 +1,18 @@
 import { ActivationState } from "@stomp/stompjs";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Platform, StyleSheet, Text, Vibration, View } from "react-native";
 import { WebSocketContext } from "../../App";
+import { Input, InputType } from "../../types/Input";
 import { AppState, AppStateContext, PlayerContext } from "../navigation/AppNavigation";
 import { VibrateGlyph } from "../ui/VibrateGlyph";
+import { VibrationEnum, VibrationVoteOption } from "../ui/VibrationVoteOption";
 
 export const VibrationScreen = (): JSX.Element => {
     const connections = useContext(WebSocketContext);
     const appContext = useContext(AppStateContext);
     const playerContext = useContext(PlayerContext);
+
+    const [isVoting, setIsVoting] = useState(false);
 
     const vibrationSchemaOne = Platform.OS === 'android' ? [400, 200, 400, 200, 400, 200, 400] : [200, 200, 200];
     const vibrationSchemaTwo = Platform.OS === 'android' ? [400, 50, 400, 50, 400, 300, 400] : [50, 50, 200];
@@ -22,6 +26,7 @@ export const VibrationScreen = (): JSX.Element => {
         }
 
         if (parsed.signal === "PLAY") {
+            setIsVoting(false);
             switch (parsed.data) {
                 case "VIB_ONE":
                     Vibration.cancel()
@@ -38,6 +43,10 @@ export const VibrationScreen = (): JSX.Element => {
                     break;
             }
         }
+
+        if (parsed.signal === "VOTE") {
+            setIsVoting(true);
+        }
     }
 
     useEffect(() => {
@@ -51,10 +60,30 @@ export const VibrationScreen = (): JSX.Element => {
         };
     }, [])
 
+    const onVote = (vibration: VibrationEnum) => {
+        const input: Input = {
+            inputType: InputType.VOTE,
+            voteOption: vibration
+        }
+        if (connections.stompConnection.state === ActivationState.ACTIVE) {
+            connections.stompConnection.publish({
+                destination: `/lobbies/${playerContext.player.lobbyId}/players/${playerContext.player.id}/input`,
+                body: JSON.stringify(input)
+            })
+        }
+
+
+    }
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={styles.title}>Listen</Text>
-            <VibrateGlyph/> 
+            {isVoting ? <Text style={styles.title}>Vote</Text> : <Text style={styles.title}>Listen</Text>}
+            {isVoting ? <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'space-evenly' }}>
+                <VibrationVoteOption vibration={VibrationEnum.VIB_ONE} onVote={onVote} />
+                <VibrationVoteOption vibration={VibrationEnum.VIB_TWO} onVote={onVote} />
+                <VibrationVoteOption vibration={VibrationEnum.VIB_THREE} onVote={onVote} />
+            </View> : <VibrateGlyph />
+
+            }
         </View>)
 }
 
