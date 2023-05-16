@@ -30,7 +30,11 @@ const WaitingScreen = () => {
                     appContext.setAppState(AppState.HOTPOTATO);
                     break;
                 case "PONG_GAME":
-                    appContext.setAppState(AppState.PONG)
+                    appContext.setAppState(AppState.PONG);
+                    break;
+                case "RPS_GAME":
+                    appContext.setAppState(AppState.RPS);
+                    break;
                 default:
                     break;
             }

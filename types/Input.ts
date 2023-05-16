@@ -2,6 +2,7 @@ export enum InputType {
     SHAKE,
     TAP,
     PONG,
+    RPS,
     ACCELEROMETER,
     GYROSCOPE
 }

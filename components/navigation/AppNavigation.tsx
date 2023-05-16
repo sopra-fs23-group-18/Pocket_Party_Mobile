@@ -11,6 +11,7 @@ import { VibrationScreen } from "../pages/VibrationScreen";
 import { PongScreen } from "../pages/PongScreen";
 import WaitingScreen from "../pages/WaitingScreen";
 import { WebRTCTestScreen } from "../pages/WebRTCTestScreen";
+import { RPSScreen } from "../pages/RPSScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,7 @@ export enum AppState {
     TAP,
     VIBRATION,
     PONG,
+    RPS,
     NOT_JOINED,
     WAITING,
     IN_GAME,
@@ -84,6 +86,12 @@ export const AppNavigation = (): JSX.Element => {
                 return (
                     <>
                         <Stack.Screen name="Pong" component={PongScreen} />
+                    </>
+                )
+            case AppState.RPS:
+                return (
+                    <>
+                        <Stack.Screen name="RPS" component={RPSScreen} />
                     </>
                 )
             case AppState.WAITING:
