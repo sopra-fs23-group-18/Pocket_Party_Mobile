@@ -20,6 +20,7 @@ export const VibrationScreen = (): JSX.Element => {
 
     const onReceive = (msg: any) => {
         const parsed = JSON.parse(msg.body);
+        
         if (parsed.signal === "STOP") {
             appContext.setAppState(AppState.WAITING);
             return;
@@ -62,8 +63,8 @@ export const VibrationScreen = (): JSX.Element => {
 
     const onVote = (vibration: VibrationEnum) => {
         const input: Input = {
-            inputType: InputType.VOTE,
-            voteOption: vibration
+            inputType: InputType.VIBRATION_VOTE,
+            rawData: {x: vibration, y: 0, z: 0}
         }
         if (connections.stompConnection.state === ActivationState.ACTIVE) {
             connections.stompConnection.publish({
@@ -71,6 +72,7 @@ export const VibrationScreen = (): JSX.Element => {
                 body: JSON.stringify(input)
             })
         }
+        appContext.setAppState(AppState.WAITING);
 
 
     }

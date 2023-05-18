@@ -5,7 +5,7 @@ export enum InputType {
     RPS,
     ACCELEROMETER,
     GYROSCOPE,
-    VOTE
+    VIBRATION_VOTE
 }
 
 export type Input = {
