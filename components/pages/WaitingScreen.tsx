@@ -35,6 +35,9 @@ const WaitingScreen = () => {
                 case "RPS_GAME":
                     appContext.setAppState(AppState.RPS);
                     break;
+                case "STRATEGY_GAME":
+                    appContext.setAppState(AppState.STRATEGY);
+                    break;
                 default:
                     break;
             }
