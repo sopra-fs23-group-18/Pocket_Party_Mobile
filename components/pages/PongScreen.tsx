@@ -17,7 +17,7 @@ export const PongScreen = (): JSX.Element => {
     const appContext = useContext(AppStateContext);
     const playerContext = useContext(PlayerContext);
   const [state, setState] = useState(0);
-  let s = 0;
+  
   const color: { [key: number]: string } = {
     0: "yellow",
     1: "green",
@@ -38,20 +38,18 @@ export const PongScreen = (): JSX.Element => {
 
   const handlePongInput = (pongInput: number) => {
     console.log(`Received pong input: ${pongInput}`);
-    s += pongInput;
-    s = Math.max(-1, Math.min(1, s));
-    setState(s);
+    setState(pongInput);
     console.log(`State is now: ${state}`);
     const input: Input = {
       inputType: InputType.PONG,
-      rawData: {x : s, y : 0, z : 0}
+      rawData: {x : state, y : 0, z : 0}
     }
     console.log(JSON.stringify(input));
     connections.stompConnection.publish({
         destination: `/lobbies/${playerContext.player.lobbyId}/players/${playerContext.player.id}/input`,
         body: JSON.stringify(input)
     })
-    console.log("Pong detectd: " + s + " times");
+    console.log("Pong detectd: " + state + " times");
   };
 
 

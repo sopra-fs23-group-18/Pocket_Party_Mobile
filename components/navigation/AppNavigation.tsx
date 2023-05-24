@@ -61,6 +61,7 @@ export const AppNavigation = (): JSX.Element => {
             case AppState.NOT_JOINED:
                 return (
                     <>
+                        <Stack.Screen name="Pong" component={PongScreen} />
                         <Stack.Screen name="Join" component={JoinScreen} />
                         <Stack.Screen name="QRScanner" component={QRScanner} />
                         <Stack.Screen name="NameInputScreen" component={NameInputScreen} />
