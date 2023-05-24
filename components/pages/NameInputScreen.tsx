@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, TextInput, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
-import { Dimensions } from 'react-native';
 import { createAvatar } from '@dicebear/core';
 import { bottts } from '@dicebear/collection';
-import { SvgXml } from 'react-native-svg';
 import { WebSocketContext } from '../../App';
 import { ActivationState } from '@stomp/stompjs'
 import { NativeStackScreenProps } from "@react-navigation/native-stack/lib/typescript/src/types";
 import Player from '../../models/Player';
 import { Button } from '../ui/Button';
 import { AppState, AppStateContext, PlayerContext } from '../navigation/AppNavigation';
+
 const NameInputScreen = (props: NativeStackScreenProps<any>) => {
     const connections = useContext(WebSocketContext);
     const appStateContext = useContext(AppStateContext);
@@ -29,7 +28,7 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
     }
 
     const onErrorOccured = (data: any) => {
-        setError(data.body.split('"')[1]);
+        setError(data.body.split('"')[1] || "An server error occured");
     }
 
 
