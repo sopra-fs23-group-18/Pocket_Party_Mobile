@@ -47,13 +47,13 @@ export const stopInputReading = () => {
 
 // Input for Pong game
 export const listenForPongInput = (onPongInput: (input: number) => void) => {
-  const ROTATION_THRESHOLD = 3;
+  const ROTATION_THRESHOLD = 2;
 
   setUpdateIntervalForType(SensorTypes.gyroscope, 100);
   subscription = gyroscope
     .pipe(
-      map(({ x }) => x),
-      filter((x: number) => Math.abs(x) > ROTATION_THRESHOLD)
+      map(({ z }) => z),
+      filter((z: number) => Math.abs(z) > ROTATION_THRESHOLD)
     )
     .subscribe((currentAngularVelocity) => {
       // Determine the Pong input based on the angular velocity
