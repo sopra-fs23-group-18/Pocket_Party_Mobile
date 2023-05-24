@@ -5,8 +5,9 @@ import {
     SensorTypes
 } from "react-native-sensors";
 import { Platform } from "react-native";
-import { Subscription } from "rxjs";
+import { Subscription} from "rxjs";
 import { map, filter } from "rxjs/operators";
+
 
 
 var subscription: Subscription | null = null;
@@ -43,3 +44,27 @@ export const stopInputReading = () => {
 
     }
 }
+
+// Input for Pong game
+export const listenForPongInput = (onPongInput: (input: number) => void) => {
+  const ROTATION_THRESHOLD = 2;
+
+  setUpdateIntervalForType(SensorTypes.gyroscope, 100);
+  subscription = gyroscope
+    .pipe(
+      map(({ z }) => z),
+      filter((z: number) => Math.abs(z) > ROTATION_THRESHOLD)
+    )
+    .subscribe((currentAngularVelocity) => {
+      // Determine the Pong input based on the angular velocity
+      if (currentAngularVelocity < -ROTATION_THRESHOLD) {
+        onPongInput(1);
+      } else if (currentAngularVelocity > ROTATION_THRESHOLD ) {
+        onPongInput(-1);
+      }
+    });
+};
+
+
+
+  

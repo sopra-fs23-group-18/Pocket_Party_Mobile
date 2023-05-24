@@ -14,6 +14,7 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
     const connections = useContext(WebSocketContext);
     const appStateContext = useContext(AppStateContext);
     const playerContext = useContext(PlayerContext);
+    const [error, setError] = useState(null as unknown as string); 
 
     const { navigation, route } = props;
     const { inviteCode }: any = route.params;
@@ -27,13 +28,20 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
 
     }
 
+    const onErrorOccured = (data: any) => {
+        setError(data.body.split('"')[1]);
+    }
+
+
     useEffect(() => {
         if (connections.stompConnection.state === ActivationState.ACTIVE) {
             connections.stompConnection.subscribe(`/user/queue/join`, onPlayerJoined);
-            return;
+            connections.stompConnection.subscribe(`/user/queue/errors`, onErrorOccured);
         }
         connections.stompConnection.onConnect = (_) => {
             connections.stompConnection.subscribe(`/user/queue/join`, onPlayerJoined);
+            connections.stompConnection.subscribe(`/user/queue/errors`, onErrorOccured);
+
         };
 
     }, [connections])
@@ -66,8 +74,7 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
 
             return;
         } else {
-            console.log("UPSI");
-
+            setError("No connection: Check your internet conenction");
         }
 
 
@@ -77,6 +84,9 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
     return (
         <View style={styles.container}>
             <Text style={styles.label}>Choose a nickname</Text>
+            {error &&
+                <Text style={styles.errorText}>{error}</Text>
+            }
             <TextInput
                 style={styles.input}
                 placeholder="Enter your name"
@@ -102,6 +112,14 @@ const styles = StyleSheet.create({
         lineHeight: 20,
         textAlign: 'center',
         color: '#53A57D',
+    },
+    errorText: {
+        fontStyle: 'normal',
+        fontWeight: '600',
+        fontSize: 12,
+        lineHeight: 40,
+        textAlign: 'center',
+        color: '#ff7979',
     },
     input: {
         width: '80%',

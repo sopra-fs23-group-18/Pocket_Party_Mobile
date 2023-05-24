@@ -11,10 +11,11 @@ const WaitingScreen = () => {
     const playerContext = useContext(PlayerContext);
     const connections = useContext(WebSocketContext);
     const appContext = useContext(AppStateContext);
-    
+
     const onReceive = (msg: any) => {
         const data = JSON.parse(msg.body);
-        if(data.signal === "START"){
+        console.log(data);
+        if (data.signal === "START") {
             switch (data.minigame) {
                 case "TIMING_GAME":
                     appContext.setAppState(AppState.SHAKE);
@@ -22,11 +23,26 @@ const WaitingScreen = () => {
                 case "TAPPING_GAME":
                     appContext.setAppState(AppState.TAP);
                     break;
+                case "VIBRATION_GAME":
+                    appContext.setAppState(AppState.VIBRATION);
+                    break;
+                case "HOTPOTATO":
+                    appContext.setAppState(AppState.HOTPOTATO);
+                    break;
+                case "PONG_GAME":
+                    appContext.setAppState(AppState.PONG);
+                    break;
+                case "RPS_GAME":
+                    appContext.setAppState(AppState.RPS);
+                    break;
+                case "STRATEGY_GAME":
+                    appContext.setAppState(AppState.STRATEGY);
+                    break;
                 default:
                     break;
             }
         }
-        
+
 
     }
 
@@ -35,8 +51,7 @@ const WaitingScreen = () => {
             connections.stompConnection.subscribe(`/topic/players/${playerContext.player.id}/signal`, onReceive);
             return;
         }
-        console.log("stomp not active");
-        
+
         connections.stompConnection.onConnect = (_) => {
             connections.stompConnection.subscribe(`/topic/players/${playerContext.player.id}/signal`, onReceive);
         };

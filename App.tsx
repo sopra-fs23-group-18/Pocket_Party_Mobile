@@ -32,7 +32,6 @@ import { AppNavigation } from './components/navigation/AppNavigation';
 const Stack = createNativeStackNavigator();
 
 type WebSocketContextType = {
-  signalingConnection: WebSocketConnection,
   stompConnection: Client
 }
 export const WebSocketContext = createContext(null as unknown as WebSocketContextType);
@@ -41,7 +40,7 @@ export const WebSocketContext = createContext(null as unknown as WebSocketContex
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   const [connections, setConnections] = useState({
-    signalingConnection: new WebSocketConnection(getWsUrl() + "/socket"), stompConnection: new Client({
+    stompConnection: new Client({
       brokerURL: getWsUrl() + "/game",
       forceBinaryWSFrames: true,
       appendMissingNULLonIncoming: true

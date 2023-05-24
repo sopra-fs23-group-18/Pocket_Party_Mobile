@@ -7,17 +7,26 @@ import NameInputScreen from "../pages/NameInputScreen";
 import { QRScanner } from "../pages/QRScanner";
 import { ShakeScreen } from "../pages/ShakeScreen";
 import { TapScreen } from "../pages/TapScreen";
+import { VibrationScreen } from "../pages/VibrationScreen";
+import { PongScreen } from "../pages/PongScreen";
 import WaitingScreen from "../pages/WaitingScreen";
 import { WebRTCTestScreen } from "../pages/WebRTCTestScreen";
+import { RPSScreen } from "../pages/RPSScreen";
+import { StrategyScreen } from "../pages/StrategyScreen";
 
 const Stack = createNativeStackNavigator();
 
 export enum AppState {
     SHAKE,
     TAP,
+    VIBRATION,
+    PONG,
+    RPS,
+    STRATEGY,
     NOT_JOINED,
     WAITING,
     IN_GAME,
+    HOTPOTATO,
 }
 
 type AppStateContextType = {
@@ -61,13 +70,36 @@ export const AppNavigation = (): JSX.Element => {
                 return (
                     <>
                         <Stack.Screen name="Shake" component={ShakeScreen} />
-                        <Stack.Screen name="WebRTC" component={WebRTCTestScreen} />
+                    </>
+                )
+            case AppState.VIBRATION:
+                return (
+                    <>
+                        <Stack.Screen name="Shake" component={VibrationScreen} />
                     </>
                 )
             case AppState.TAP:
                 return (
                     <>
                         <Stack.Screen name="Tap" component={TapScreen} />
+                    </>
+                )
+            case AppState.PONG:
+                return (
+                    <>
+                        <Stack.Screen name="Pong" component={PongScreen} />
+                    </>
+                )
+            case AppState.RPS:
+                return (
+                    <>
+                        <Stack.Screen name="RPS" component={RPSScreen} />
+                    </>
+                )
+            case AppState.STRATEGY:
+                return (
+                    <>
+                        <Stack.Screen name="Strategy" component={StrategyScreen} />
                     </>
                 )
             case AppState.WAITING:

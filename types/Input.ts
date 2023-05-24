@@ -1,12 +1,17 @@
-export enum InputType{
+export enum InputType {
     SHAKE,
     TAP,
+    PONG,
+    RPS,
+    STRATEGY,
     ACCELEROMETER,
-    GYROSCOPE
+    GYROSCOPE,
+    VIBRATION_VOTE
 }
 
 export type Input = {
     inputType: InputType,
-    rawData?: {x: number, y: number, z: number},
-    count?: {count: number}
+    rawData?: { x: number, y: number, z: number },
+    hasTapped?: { hasTapped: boolean },
+    voteOption?: number, 
 }
