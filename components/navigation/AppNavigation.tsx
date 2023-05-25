@@ -13,6 +13,7 @@ import WaitingScreen from "../pages/WaitingScreen";
 import { WebRTCTestScreen } from "../pages/WebRTCTestScreen";
 import { RPSScreen } from "../pages/RPSScreen";
 import { StrategyScreen } from "../pages/StrategyScreen";
+import VotingScreen from "../pages/VotingScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ export enum AppState {
     WAITING,
     IN_GAME,
     HOTPOTATO,
+    VOTING
 }
 
 type AppStateContextType = {
@@ -106,6 +108,14 @@ export const AppNavigation = (): JSX.Element => {
                 return (
                     <>
                         <Stack.Screen name="WaitingScreen" component={WaitingScreen} />
+                    </>
+                )
+            case AppState.VOTING:
+                console.log("hello");
+                
+                return (
+                    <>
+                        <Stack.Screen name="VotingScreen" component={VotingScreen} />
                     </>
                 )
             default:

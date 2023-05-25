@@ -14,6 +14,10 @@ const WaitingScreen = () => {
 
     const onReceive = (msg: any) => {
         const data = JSON.parse(msg.body);
+        if (data.signal === "VOTE") {
+            console.log("VOTESIGNAL RECEIVED");
+            appContext.setAppState(AppState.VOTING);
+        }
         if (data.signal === "START") {
             switch (data.minigame) {
                 case "TIMING_TUMBLE":

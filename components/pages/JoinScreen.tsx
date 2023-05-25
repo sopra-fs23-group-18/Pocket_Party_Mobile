@@ -28,6 +28,9 @@ export const JoinScreen = (props: NativeStackScreenProps<any>): JSX.Element => {
     const goToNIS = (_: GestureResponderEvent) => {
         navigation.navigate('NameInputScreen');
     }
+    const goToVoting = () => {
+        navigation.navigate('Voting');
+    }
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
