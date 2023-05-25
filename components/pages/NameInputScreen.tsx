@@ -91,7 +91,7 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
                 placeholder="Enter your name"
                 value={name}
                 onChangeText={handleNameChange}
-                maxLength={16}
+                maxLength={15}
             />
             <Button onPress={handleReadyPress} text='Ready' />
         </View>
