@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import { WebSocketContext } from "../../App";
 import { ActivationState } from "@stomp/stompjs";
-import { AppState, AppStateContext, PeerConnectionContext, PlayerContext } from "../navigation/AppNavigation";
+import { AppState, AppStateContext, PlayerContext } from "../navigation/AppNavigation";
 import { Input, InputType } from "../../types/Input";
 
 

@@ -19,9 +19,7 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
     const { inviteCode }: any = route.params;
     const onPlayerJoined = (data: any) => {
         // console.log(`TODO: SAVE registered player data ${data.body}`);
-        const player: Player = JSON.parse(data.body);
-        console.log(`IHAVE player id ${player.id}`);
-        
+        const player: Player = JSON.parse(data.body);        
         playerContext.setPlayer(player)
         appStateContext.setAppState(AppState.WAITING)
 
@@ -33,7 +31,7 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
 
 
     useEffect(() => {
-        if (connections.stompConnection.state === ActivationState.ACTIVE) {
+        if (connections.stompConnection.state === ActivationState.ACTIVE && connections.stompConnection.connected) {
             connections.stompConnection.subscribe(`/user/queue/join`, onPlayerJoined);
             connections.stompConnection.subscribe(`/user/queue/errors`, onErrorOccured);
         }
@@ -64,7 +62,7 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
             avatar: avatar
         };
 
-        if (connections.stompConnection.state === ActivationState.ACTIVE) {
+        if (connections.stompConnection.state === ActivationState.ACTIVE && connections.stompConnection.connected) {
             connections.stompConnection.publish({
                 destination: `/lobbies/${inviteCode}`,
                 body: JSON.stringify(player)
@@ -75,9 +73,6 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
         } else {
             setError("No connection: Check your internet conenction");
         }
-
-
-        //TODO Handle no internet connection
     };
 
     return (
@@ -91,6 +86,7 @@ const NameInputScreen = (props: NativeStackScreenProps<any>) => {
                 placeholder="Enter your name"
                 value={name}
                 onChangeText={handleNameChange}
+                maxLength={15}
             />
             <Button onPress={handleReadyPress} text='Ready' />
         </View>

@@ -1,7 +1,7 @@
 import { SvgXml } from "react-native-svg";
 import { View, StyleSheet, Animated, Easing } from "react-native";
 import { useContext, useEffect, useState } from "react";
-import { AppState, AppStateContext, PeerConnectionContext, PlayerContext } from "../navigation/AppNavigation";
+import { AppState, AppStateContext, PlayerContext } from "../navigation/AppNavigation";
 import { PeerConnection } from "../../util/WebRTC";
 import { WebSocketContext } from "../../App";
 import { ActivationState } from "@stomp/stompjs";
@@ -14,28 +14,24 @@ const WaitingScreen = () => {
 
     const onReceive = (msg: any) => {
         const data = JSON.parse(msg.body);
-        console.log(data);
         if (data.signal === "START") {
             switch (data.minigame) {
-                case "TIMING_GAME":
+                case "TIMING_TUMBLE":
                     appContext.setAppState(AppState.SHAKE);
                     break;
-                case "TAPPING_GAME":
+                case "QUICK_FINGERS":
                     appContext.setAppState(AppState.TAP);
                     break;
-                case "VIBRATION_GAME":
+                case "VIBRATION_VOYAGE":
                     appContext.setAppState(AppState.VIBRATION);
                     break;
-                case "HOTPOTATO":
-                    appContext.setAppState(AppState.HOTPOTATO);
-                    break;
-                case "PONG_GAME":
+                case "POCKET_PONG":
                     appContext.setAppState(AppState.PONG);
                     break;
-                case "RPS_GAME":
+                case "ROCK_PAPER_SCISSORS":
                     appContext.setAppState(AppState.RPS);
                     break;
-                case "STRATEGY_GAME":
+                case "GREEDY_GAMBIT":
                     appContext.setAppState(AppState.STRATEGY);
                     break;
                 default:
@@ -47,9 +43,8 @@ const WaitingScreen = () => {
     }
 
     useEffect(() => {
-        if (connections.stompConnection.state === ActivationState.ACTIVE) {
+        if (connections.stompConnection.state === ActivationState.ACTIVE && connections.stompConnection.connected) {
             connections.stompConnection.subscribe(`/topic/players/${playerContext.player.id}/signal`, onReceive);
-            return;
         }
 
         connections.stompConnection.onConnect = (_) => {

@@ -66,13 +66,13 @@ export const VibrationScreen = (): JSX.Element => {
             inputType: InputType.VIBRATION_VOTE,
             rawData: {x: vibration, y: 0, z: 0}
         }
-        if (connections.stompConnection.state === ActivationState.ACTIVE) {
+        if (connections.stompConnection.state === ActivationState.ACTIVE && connections.stompConnection.connected) {
             connections.stompConnection.publish({
                 destination: `/lobbies/${playerContext.player.lobbyId}/players/${playerContext.player.id}/input`,
                 body: JSON.stringify(input)
             })
+            appContext.setAppState(AppState.WAITING);
         }
-        appContext.setAppState(AppState.WAITING);
 
 
     }
