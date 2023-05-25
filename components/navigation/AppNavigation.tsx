@@ -79,7 +79,7 @@ export const AppNavigation = (): JSX.Element => {
             case AppState.VIBRATION:
                 return (
                     <>
-                        <Stack.Screen name="Shake" component={VibrationScreen} />
+                        <Stack.Screen name="Vibration" component={VibrationScreen} />
                     </>
                 )
             case AppState.TAP:

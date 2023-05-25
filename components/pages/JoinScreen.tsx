@@ -79,6 +79,9 @@ export const JoinScreen = (props: NativeStackScreenProps<any>): JSX.Element => {
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            {error &&
+                <Text style={styles.errorText}>{error}</Text>
+            }
             {playerContext.player && <TouchableOpacity style={styles.button} onPress={rejoin} ><Text style={styles.buttonText}>Rejoin Game</Text></TouchableOpacity>}
            <Button onPress={goToQRScanner} text="Join a game"/>
         </View>)
@@ -102,5 +105,13 @@ const styles = StyleSheet.create({
         fontSize: 32,
         lineHeight: 40,
         color: '#FFFFFF',
+    },
+    errorText: {
+        fontStyle: 'normal',
+        fontWeight: '600',
+        fontSize: 12,
+        lineHeight: 40,
+        textAlign: 'center',
+        color: '#ff7979',
     },
 });
