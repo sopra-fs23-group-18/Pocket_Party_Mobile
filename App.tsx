@@ -41,6 +41,7 @@ function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   const [connections, setConnections] = useState({
     stompConnection: new Client({
+      heartbeatOutgoing: 1000,
       brokerURL: getWsUrl() + "/game",
       forceBinaryWSFrames: true,
       appendMissingNULLonIncoming: true

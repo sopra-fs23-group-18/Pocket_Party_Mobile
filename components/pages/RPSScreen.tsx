@@ -47,7 +47,6 @@ export const RPSScreen = (): JSX.Element => {
     useEffect(() => {
         if (connections.stompConnection.state === ActivationState.ACTIVE) {
             connections.stompConnection.subscribe(`/topic/players/${playerContext.player.id}/signal`, onReceive);
-            return;
         }
     
         connections.stompConnection.onConnect = (_) => {

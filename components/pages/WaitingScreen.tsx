@@ -1,7 +1,7 @@
 import { SvgXml } from "react-native-svg";
 import { View, StyleSheet, Animated, Easing } from "react-native";
 import { useContext, useEffect, useState } from "react";
-import { AppState, AppStateContext, PeerConnectionContext, PlayerContext } from "../navigation/AppNavigation";
+import { AppState, AppStateContext, PlayerContext } from "../navigation/AppNavigation";
 import { PeerConnection } from "../../util/WebRTC";
 import { WebSocketContext } from "../../App";
 import { ActivationState } from "@stomp/stompjs";
@@ -43,9 +43,8 @@ const WaitingScreen = () => {
     }
 
     useEffect(() => {
-        if (connections.stompConnection.state === ActivationState.ACTIVE) {
+        if (connections.stompConnection.state === ActivationState.ACTIVE && connections.stompConnection.connected) {
             connections.stompConnection.subscribe(`/topic/players/${playerContext.player.id}/signal`, onReceive);
-            return;
         }
 
         connections.stompConnection.onConnect = (_) => {
