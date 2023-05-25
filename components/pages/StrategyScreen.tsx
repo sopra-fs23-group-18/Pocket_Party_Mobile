@@ -26,13 +26,7 @@ export const StrategyScreen = (): JSX.Element => {
     }
 
     const greedyChoice = (choice: number) => {
-        // the next choice should not be the same as the last choice
-        // if it is, remind the player to choose a different one
-        if (choice === lastChoice) {
-            Alert.alert("You can't choose the same number twice in a row!");
-            return;
-        }
-        lastChoice = choice;
+        
         setChoice(choice);
         
         const input: Input = {
@@ -65,17 +59,17 @@ export const StrategyScreen = (): JSX.Element => {
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText} onPress={() => greedyChoice(1)}>
-                        💵
+                        1💵
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText} onPress={() => greedyChoice(3)}>
-                        💰💰💰
+                        3💰
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button}>
                     <Text style={styles.buttonText} onPress={() => greedyChoice(5)}>
-                        💎💎💎💎💎
+                        5💎
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -111,7 +105,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     buttonText: {
-        fontSize: 60,
+        fontSize: 80,
         fontWeight: "bold",
         color: "#fff",
     },
