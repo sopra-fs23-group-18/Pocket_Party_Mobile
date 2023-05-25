@@ -22,7 +22,7 @@ const WaitingScreen = () => {
                 case "QUICK_FINGERS":
                     appContext.setAppState(AppState.TAP);
                     break;
-                case "VIBRATION VOYAGE":
+                case "VIBRATION_VOYAGE":
                     appContext.setAppState(AppState.VIBRATION);
                     break;
                 case "POCKET_PONG":
