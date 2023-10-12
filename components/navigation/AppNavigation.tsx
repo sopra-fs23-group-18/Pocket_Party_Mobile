@@ -8,11 +8,11 @@ import {QRScanner} from '../pages/QRScanner';
 import {ShakeScreen} from '../pages/ShakeScreen';
 import {TapScreen} from '../pages/TapScreen';
 import {VibrationScreen} from '../pages/VibrationScreen';
-// import {PongScreen} from '../pages/PongScreen';
+import {PongScreen} from '../pages/PongScreen';
 import WaitingScreen from '../pages/WaitingScreen';
 import {RPSScreen} from '../pages/RPSScreen';
 import {StrategyScreen} from '../pages/StrategyScreen';
-import App, {WebSocketContext} from '../../App';
+import {WebSocketContext} from '../../App';
 import {PushDownScreen} from '../pages/PushDown';
 
 const Stack = createNativeStackNavigator();
@@ -26,6 +26,7 @@ export enum AppState {
   STRATEGY,
   NOT_JOINED,
   WAITING,
+  PUSH_DOWN,
   IN_GAME,
 }
 
@@ -50,7 +51,7 @@ export const AppStateContext = createContext(
 export const PlayerContext = createContext(null as unknown as PlayerConextType);
 
 export const AppNavigation = (): JSX.Element => {
-  const [appState, setAppState] = useState(AppState.PONG);
+  const [appState, setAppState] = useState(AppState.NOT_JOINED);
 
   //TODO maybe persist player information
   const [player, setPlayer] = useState(null as unknown as Player);
@@ -60,7 +61,7 @@ export const AppNavigation = (): JSX.Element => {
     connections.stompConnection.onWebSocketClose = () => {
       console.log('Disconnected');
 
-      setAppState(AppState.PONG);
+      setAppState(AppState.NOT_JOINED);
     };
   }, [connections]);
   const renderStack = (appState: AppState) => {
@@ -94,7 +95,7 @@ export const AppNavigation = (): JSX.Element => {
       case AppState.PONG:
         return (
           <>
-            <Stack.Screen name="Pong" component={PushDownScreen} />
+            <Stack.Screen name="Pong" component={PongScreen} />
           </>
         );
       case AppState.RPS:
@@ -107,6 +108,12 @@ export const AppNavigation = (): JSX.Element => {
         return (
           <>
             <Stack.Screen name="Strategy" component={StrategyScreen} />
+          </>
+        );
+      case AppState.PUSH_DOWN:
+        return (
+          <>
+            <Stack.Screen name="PushDown" component={PushDownScreen} />
           </>
         );
       case AppState.WAITING:

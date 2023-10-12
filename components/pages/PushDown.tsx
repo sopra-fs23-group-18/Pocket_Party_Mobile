@@ -8,9 +8,17 @@ import {WebSocketContext} from '../../App';
 import {Input, InputType} from '../../types/Input';
 import {Text, View} from 'react-native';
 import React from 'react';
+import {
+  AppState,
+  AppStateContext,
+  PlayerContext,
+} from '../navigation/AppNavigation';
+import {ActivationState} from '@stomp/stompjs';
 
 export const PushDownScreen = (): JSX.Element => {
   const connections = useContext(WebSocketContext);
+  const playerContext = useContext(PlayerContext);
+  const appContext = useContext(AppStateContext);
 
   useEffect(() => {
     const onInput = (vec: Vector3) => {
@@ -19,9 +27,30 @@ export const PushDownScreen = (): JSX.Element => {
         rawData: vec,
       };
       connections.stompConnection.publish({
-        destination: '/lobbies/0/players/2/input',
+        destination: `/lobbies/${playerContext.player.lobbyId}/players/${playerContext.player.id}/input`,
         body: JSON.stringify(input),
       });
+    };
+
+    const onReceive = (msg: any) => {
+      const data = JSON.parse(msg.body);
+      if (data.signal === 'STOP') {
+        appContext.setAppState(AppState.WAITING);
+      }
+    };
+
+    if (connections.stompConnection.state === ActivationState.ACTIVE) {
+      connections.stompConnection.subscribe(
+        `/topic/players/${playerContext.player.id}/signal`,
+        onReceive,
+      );
+    }
+
+    connections.stompConnection.onConnect = _ => {
+      connections.stompConnection.subscribe(
+        `/topic/players/${playerContext.player.id}/signal`,
+        onReceive,
+      );
     };
 
     listenForNavigationInput(onInput);
@@ -29,7 +58,7 @@ export const PushDownScreen = (): JSX.Element => {
     return () => {
       stopInputReading();
     };
-  }, [connections]);
+  }, [connections, playerContext, appContext]);
 
   return (
     <View>
