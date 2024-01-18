@@ -1,11 +1,15 @@
-import { useEffect, useState, useContext } from 'react';
-import { WebSocketContext } from '../../App';
-import { AppState, AppStateContext, PlayerContext } from '../navigation/AppNavigation';
-import { listenForPongInput, stopInputReading } from '../../util/InputHandler';
-import { StyleSheet, Text, View } from "react-native";
-import { PongGlyph } from "../ui/PongGlyph";
-import { Input, InputType } from '../../types/Input';
-import { ActivationState } from '@stomp/stompjs';
+import {useEffect, useState, useContext} from 'react';
+import {WebSocketContext} from '../../App';
+import {
+  AppState,
+  AppStateContext,
+  PlayerContext,
+} from '../navigation/AppNavigation';
+import {listenForPongInput, stopInputReading} from '../../util/InputHandler';
+import {StyleSheet, Text, View} from 'react-native';
+import {PongGlyph} from '../ui/PongGlyph';
+import {Input, InputType} from '../../types/Input';
+import {ActivationState} from '@stomp/stompjs';
 
 export const PongScreen = (): JSX.Element => {
   // transform the Pong input into a state
@@ -13,43 +17,42 @@ export const PongScreen = (): JSX.Element => {
   // update the state when the input changes
   // use the state to change the screen
   const connections = useContext(WebSocketContext);
-    // const peerConnectionContext = useContext(PeerConnectionContext);
-    const appContext = useContext(AppStateContext);
-    const playerContext = useContext(PlayerContext);
+  // const peerConnectionContext = useContext(PeerConnectionContext);
+  const appContext = useContext(AppStateContext);
+  const playerContext = useContext(PlayerContext);
   const [state, setState] = useState(0);
-  
-  const color: { [key: number]: string } = {
-    0: "yellow",
-    1: "green",
-    "-1": "red",
+
+  const color: {[key: number]: string} = {
+    0: 'yellow',
+    1: 'green',
+    '-1': 'red',
   };
-  const text: { [key: number]: string } = {
-    0: "Stop",
-    1: "Up",
-    "-1": "Down",
+  const text: {[key: number]: string} = {
+    0: 'Stop',
+    1: 'Up',
+    '-1': 'Down',
   };
-   
-  const onReceive = (msg:any) => {
+
+  const onReceive = (msg: any) => {
     const data = JSON.parse(msg.body);
-    if(data.signal === "STOP"){
+    if (data.signal === 'STOP') {
       appContext.setAppState(AppState.WAITING);
     }
-  }
+  };
 
   const handlePongInput = (pongInput: number) => {
     console.log(`Received pong input: ${pongInput}`);
     setState(pongInput);
     const input: Input = {
       inputType: InputType.PONG,
-      rawData: {x : pongInput, y : 0, z : 0}
-    }
+      rawData: {x: pongInput, y: 0, z: 0},
+    };
     connections.stompConnection.publish({
-        destination: `/lobbies/${playerContext.player.lobbyId}/players/${playerContext.player.id}/input`,
-        body: JSON.stringify(input)
-    })
-    console.log("Pong detectd: " + state + " times");
+      destination: `/lobbies/${playerContext.player.lobbyId}/players/${playerContext.player.id}/input`,
+      body: JSON.stringify(input),
+    });
+    console.log('Pong detectd: ' + state + ' times');
   };
-
 
   useEffect(() => {
     listenForPongInput(handlePongInput);
@@ -61,15 +64,20 @@ export const PongScreen = (): JSX.Element => {
 
   useEffect(() => {
     if (connections.stompConnection.state === ActivationState.ACTIVE) {
-        connections.stompConnection.subscribe(`/topic/players/${playerContext.player.id}/signal`, onReceive);
-        return;
+      connections.stompConnection.subscribe(
+        `/topic/players/${playerContext.player.id}/signal`,
+        onReceive,
+      );
+      return;
     }
 
-    connections.stompConnection.onConnect = (_) => {
-        connections.stompConnection.subscribe(`/topic/players/${playerContext.player.id}/signal`, onReceive);
+    connections.stompConnection.onConnect = _ => {
+      connections.stompConnection.subscribe(
+        `/topic/players/${playerContext.player.id}/signal`,
+        onReceive,
+      );
     };
-}, [])
-
+  }, []);
 
   // Render the Pong screen
   return (
@@ -77,7 +85,7 @@ export const PongScreen = (): JSX.Element => {
     // The sreen will change based on the state
     // You can use the state to change the color of the screen and the text
 
-    <View style={[styles.container, { backgroundColor: color[state] }]}>
+    <View style={[styles.container, {backgroundColor: color[state]}]}>
       <Text style={styles.text}>{text[state]}</Text>
       <PongGlyph size={1000} value={state} />
     </View>
@@ -87,18 +95,15 @@ export const PongScreen = (): JSX.Element => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
   },
   text: {
-    position: "absolute",
+    position: 'absolute',
     width: 195,
     height: 172,
     top: 500,
     fontSize: 70,
-    textAlign: "center",
-    color: "black",
-  }
-})
-
-
-
+    textAlign: 'center',
+    color: 'black',
+  },
+});
