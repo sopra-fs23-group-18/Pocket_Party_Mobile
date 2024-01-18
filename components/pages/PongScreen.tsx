@@ -36,18 +36,16 @@ export const PongScreen = (): JSX.Element => {
     }
   }
 
-  const handlePongInput = (pongInput: number) => {
-    console.log(`Received pong input: ${pongInput}`);
-    setState(pongInput);
+  const handlePongInput = (y: number, x: number) => {
     const input: Input = {
       inputType: InputType.PONG,
-      rawData: {x : pongInput, y : 0, z : 0}
-    }
+      rawData: {x: x, y: y, z: 0},
+    };
     connections.stompConnection.publish({
-        destination: `/lobbies/${playerContext.player.lobbyId}/players/${playerContext.player.id}/input`,
-        body: JSON.stringify(input)
-    })
-    console.log("Pong detectd: " + state + " times");
+      destination: `/lobbies/1/players/1/input`,
+      body: JSON.stringify(input),
+    });
+    console.log('Pong detectd: ' + state + ' times');
   };
 
 

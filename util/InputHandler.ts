@@ -46,24 +46,35 @@ export const stopInputReading = () => {
 }
 
 // Input for Pong game
-export const listenForPongInput = (onPongInput: (input: number) => void) => {
+export const listenForPongInput = (onPongInput: (inputX: number, inputY: number) => void) => {
   const ROTATION_THRESHOLD = 2;
 
   setUpdateIntervalForType(SensorTypes.gyroscope, 100);
   subscription = gyroscope
     .pipe(
-      map(({ z }) => z),
-      filter((z: number) => Math.abs(z) > ROTATION_THRESHOLD)
+      map(({x, y}) => ({x, y})),
+      filter(({x, y}) => Math.abs(x) > ROTATION_THRESHOLD || Math.abs(y) > ROTATION_THRESHOLD),
     )
-    .subscribe((currentAngularVelocity) => {
+    .subscribe(({x, y}) => {
       // Determine the Pong input based on the angular velocity
-      if (currentAngularVelocity < -ROTATION_THRESHOLD) {
-        onPongInput(1);
-      } else if (currentAngularVelocity > ROTATION_THRESHOLD ) {
-        onPongInput(-1);
+      let inputX = 0;
+      let inputY = 0;
+
+      // Check for z-axis rotation (yaw)
+      if (Math.abs(x) > ROTATION_THRESHOLD) {
+        inputX = x > 0 ? 1 : -1;
       }
+
+      // Check for y-axis rotation (pitch)
+      if (Math.abs(y) > ROTATION_THRESHOLD) {
+        inputY = y > 0 ? 1 : -1;
+      }
+
+      // Call the callback with the Pong input
+      onPongInput(inputX, inputY);
     });
 };
+
 
 
 
