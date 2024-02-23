@@ -1,18 +1,20 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React, { createContext, useContext, useEffect, useState } from "react"
-import Player from "../../models/Player";
-import { PeerConnection } from "../../util/WebRTC";
-import { JoinScreen } from "../pages/JoinScreen";
-import NameInputScreen from "../pages/NameInputScreen";
-import { QRScanner } from "../pages/QRScanner";
-import { ShakeScreen } from "../pages/ShakeScreen";
-import { TapScreen } from "../pages/TapScreen";
-import { VibrationScreen } from "../pages/VibrationScreen";
-import { PongScreen } from "../pages/PongScreen";
-import WaitingScreen from "../pages/WaitingScreen";
-import { RPSScreen } from "../pages/RPSScreen";
-import { StrategyScreen } from "../pages/StrategyScreen";
-import App, { WebSocketContext } from "../../App";
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, {createContext, useContext, useEffect, useState} from 'react';
+import Player from '../../models/Player';
+// import {PeerConnection} from '../../util/WebRTC';
+import {JoinScreen} from '../pages/JoinScreen';
+import NameInputScreen from '../pages/NameInputScreen';
+import {QRScanner} from '../pages/QRScanner';
+import {ShakeScreen} from '../pages/ShakeScreen';
+import {TapScreen} from '../pages/TapScreen';
+import {VibrationScreen} from '../pages/VibrationScreen';
+// import {PongScreen} from '../pages/PongScreen';
+import WaitingScreen from '../pages/WaitingScreen';
+import {RPSScreen} from '../pages/RPSScreen';
+import {StrategyScreen} from '../pages/StrategyScreen';
+import App, {WebSocketContext} from '../../App';
+import {PushDownScreen} from '../pages/PushDown';
+import { PongScreen } from '../pages/PongScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -53,70 +55,69 @@ export const AppNavigation = (): JSX.Element => {
     const [player, setPlayer] = useState(null as unknown as Player);
     const connections = useContext(WebSocketContext);
 
-    useEffect(() => {
-        connections.stompConnection.onWebSocketClose = () => {
-            console.log("Disconnected");
-            
-            setAppState(AppState.NOT_JOINED);
-        }
-    }, [connections])
-    const renderStack = (appState: AppState) => {
-        switch (appState) {
-            case AppState.NOT_JOINED:
-                return (
-                    <>
-                        <Stack.Screen name="Join" component={JoinScreen} />
-                        <Stack.Screen name="QRScanner" component={QRScanner} />
-                        <Stack.Screen name="NameInputScreen" component={NameInputScreen} />
-                    </>
-                )
-            case AppState.SHAKE:
-                return (
-                    <>
-                        <Stack.Screen name="Shake" component={ShakeScreen} />
-                    </>
-                )
-            case AppState.VIBRATION:
-                return (
-                    <>
-                        <Stack.Screen name="Vibration" component={VibrationScreen} />
-                    </>
-                )
-            case AppState.TAP:
-                return (
-                    <>
-                        <Stack.Screen name="Tap" component={TapScreen} />
-                    </>
-                )
-            case AppState.PONG:
-                return (
-                    <>
-                        <Stack.Screen name="Pong" component={PongScreen} />
-                    </>
-                )
-            case AppState.RPS:
-                return (
-                    <>
-                        <Stack.Screen name="RPS" component={RPSScreen} />
-                    </>
-                )
-            case AppState.STRATEGY:
-                return (
-                    <>
-                        <Stack.Screen name="Strategy" component={StrategyScreen} />
-                    </>
-                )
-            case AppState.WAITING:
-                return (
-                    <>
-                        <Stack.Screen name="WaitingScreen" component={WaitingScreen} />
-                    </>
-                )
-            default:
-                break;
-        }
-    }
+  useEffect(() => {
+    connections.stompConnection.onWebSocketClose = () => {
+      console.log('Disconnected');
 
+      setAppState(AppState.NOT_JOINED);
+    };
+  }, [connections]);
+  const renderStack = (appState: AppState) => {
+    switch (appState) {
+      case AppState.NOT_JOINED:
+        return (
+          <>
+            <Stack.Screen name="Join" component={JoinScreen} />
+            <Stack.Screen name="QRScanner" component={QRScanner} />
+            <Stack.Screen name="NameInputScreen" component={NameInputScreen} />
+          </>
+        );
+      case AppState.SHAKE:
+        return (
+          <>
+            <Stack.Screen name="Shake" component={ShakeScreen} />
+          </>
+        );
+      case AppState.VIBRATION:
+        return (
+          <>
+            <Stack.Screen name="Vibration" component={VibrationScreen} />
+          </>
+        );
+      case AppState.TAP:
+        return (
+          <>
+            <Stack.Screen name="Tap" component={TapScreen} />
+          </>
+        );
+      case AppState.PONG:
+        return (
+          <>
+            <Stack.Screen name="Pong" component={PongScreen} />
+          </>
+        );
+      case AppState.RPS:
+        return (
+          <>
+            <Stack.Screen name="RPS" component={RPSScreen} />
+          </>
+        );
+      case AppState.STRATEGY:
+        return (
+          <>
+            <Stack.Screen name="Strategy" component={StrategyScreen} />
+          </>
+        );
+      case AppState.WAITING:
+        return (
+          <>
+            <Stack.Screen name="WaitingScreen" component={WaitingScreen} />
+          </>
+        );
+      default:
+        break;
+    }
+  };
 
     return (
         <AppStateContext.Provider value={{ appState, setAppState }}>
