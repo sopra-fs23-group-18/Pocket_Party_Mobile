@@ -1,11 +1,12 @@
 import { useEffect, useState, useContext } from 'react';
 import { WebSocketContext } from '../../App';
 import { AppState, AppStateContext, PlayerContext } from '../navigation/AppNavigation';
-import { listenForPongInput, stopInputReading } from '../../util/InputHandler';
+import { Vector3, listenForPongInput, stopInputReading } from '../../util/InputHandler';
 import { StyleSheet, Text, View } from "react-native";
 import { PongGlyph } from "../ui/PongGlyph";
 import { Input, InputType } from '../../types/Input';
 import { ActivationState } from '@stomp/stompjs';
+
 
 export const PongScreen = (): JSX.Element => {
   // transform the Pong input into a state
@@ -36,13 +37,13 @@ export const PongScreen = (): JSX.Element => {
     }
   }
 
-  const handlePongInput = (y: number, x: number) => {
+  const handlePongInput = (vec: Vector3) => {
     const input: Input = {
       inputType: InputType.PONG,
-      rawData: {x: x, y: y, z: 0},
+      rawData: {x: vec.x, y: vec.y, z: vec.z},
     };
     connections.stompConnection.publish({
-      destination: `/lobbies/1/players/1/input`,
+      destination: `/lobbies/${playerContext.player.lobbyId}/players/${playerContext.player.id}/input`,
       body: JSON.stringify(input),
     });
     console.log('Pong detectd: ' + state + ' times');

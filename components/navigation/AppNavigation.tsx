@@ -59,7 +59,7 @@ export const AppNavigation = (): JSX.Element => {
     connections.stompConnection.onWebSocketClose = () => {
       console.log('Disconnected');
 
-      setAppState(AppState.PONG);
+      setAppState(AppState.NOT_JOINED);
     };
   }, [connections]);
   const renderStack = (appState: AppState) => {
